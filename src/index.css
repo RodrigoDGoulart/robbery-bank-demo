@@ -1,0 +1,12 @@
+html,
+body,
+#root {
+  margin: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100svh;
+  background: url('./assets/background.png') center center / cover no-repeat;
+}
