@@ -1,7 +1,5 @@
 import './App.scss'
-import JackpotButtons from './components/JackpotButtons'
-
-const staticImagePath = '/static_images'
+import GridBoard from './components/GridBoard'
 
 function App() {
   const handleLeftGreenButton = () => {}
@@ -10,19 +8,11 @@ function App() {
 
   return (
     <div className="app-shell">
-      <div className="game-board-container">
-        <img
-          className="grid-board"
-          src={`${staticImagePath}/grid-board.png`}
-          alt="Jackpot grid board"
-        />
-        
-        <JackpotButtons
-          onLeftGreenClick={handleLeftGreenButton}
-          onRedClick={handleRedButton}
-          onRightGreenClick={handleRightGreenButton}
-        />
-      </div>
+      <GridBoard
+        onLeftGreenClick={handleLeftGreenButton}
+        onRedClick={handleRedButton}
+        onRightGreenClick={handleRightGreenButton}
+      />
     </div>
   )
 }
