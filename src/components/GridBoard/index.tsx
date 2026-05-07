@@ -1,3 +1,4 @@
+import Fox from "../Fox";
 import JackpotButtons from "../JackpotButtons";
 import "./GridBoard.scss";
 
@@ -27,6 +28,8 @@ function GridBoard({
         onRedClick={onRedClick}
         onRightGreenClick={onRightGreenClick}
       />
+
+      <Fox />
     </div>
   );
 }
