@@ -1,0 +1,51 @@
+.vertical-slot-reel {
+  position: relative;
+  overflow: hidden;
+}
+
+.vertical-slot-reel::before,
+.vertical-slot-reel::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  height: 28%;
+  pointer-events: none;
+  border-radius: 18px;
+}
+
+.vertical-slot-reel::before {
+  top: 0;
+}
+
+.vertical-slot-reel::after {
+  bottom: 0;
+}
+
+.vertical-slot-reel__selection {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  left: 6px;
+  z-index: 3;
+  height: 20%;
+  border-top: 2px solid rgba(255, 245, 190, 0.2);
+  border-bottom: 2px solid rgba(255, 245, 190, 0.2);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.vertical-slot-reel__strip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.vertical-slot-reel__cell {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}

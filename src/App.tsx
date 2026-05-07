@@ -1,20 +1,12 @@
-import './App.scss'
-import GridBoard from './components/GridBoard'
+import "./App.scss";
+import GridBoard from "./components/GridBoard";
 
 function App() {
-  const handleLeftGreenButton = () => {}
-  const handleRedButton = () => {}
-  const handleRightGreenButton = () => {}
-
   return (
     <div className="app-shell">
-      <GridBoard
-        onLeftGreenClick={handleLeftGreenButton}
-        onRedClick={handleRedButton}
-        onRightGreenClick={handleRightGreenButton}
-      />
+      <GridBoard />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
