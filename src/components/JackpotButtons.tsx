@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import "./JackpotButtons.scss";
 
 const staticImagePath = "/static_images";
 

@@ -1,0 +1,27 @@
+.game-button {
+  position: absolute;
+  left: var(--button-left, auto);
+  right: var(--button-right, auto);
+  bottom: var(--button-bottom);
+  width: var(--button-width);
+  height: var(--button-height);
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  background-image: var(--button-normal-image);
+  background-position: var(--button-normal-image-x) var(--button-normal-image-y);
+  background-repeat: no-repeat;
+  background-size: var(--button-normal-image-size);
+  cursor: pointer;
+
+  &:active {
+    background-image: var(--button-pressed-image);
+    background-position: var(--button-pressed-image-x) var(--button-pressed-image-y);
+    background-size: var(--button-pressed-image-size);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+}

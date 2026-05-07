@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 import JackpotButtons from './components/JackpotButtons'
 
 const staticImagePath = '/static_images'
