@@ -6,12 +6,14 @@ type JackpotButtonsProps = {
   onLeftGreenClick: () => void;
   onRedClick: () => void;
   onRightGreenClick: () => void;
+  redDisabled?: boolean;
 };
 
 function JackpotButtons({
   onLeftGreenClick,
   onRedClick,
   onRightGreenClick,
+  redDisabled = false,
 }: JackpotButtonsProps) {
   return (
     <>
@@ -26,6 +28,7 @@ function JackpotButtons({
         adjustments={buttonAdjustments.red}
         ariaLabel="Red button"
         className="red-button"
+        disabled={redDisabled}
         images={buttonImages.red}
         onClick={onRedClick}
       />

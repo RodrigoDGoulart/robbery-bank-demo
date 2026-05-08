@@ -20,6 +20,17 @@
     background-size: var(--button-pressed-image-size);
   }
 
+  &:disabled {
+    cursor: default;
+    filter: grayscale(1) contrast(1.35) brightness(0.75);
+  }
+
+  &:disabled:active {
+    background-image: var(--button-normal-image);
+    background-position: var(--button-normal-image-x) var(--button-normal-image-y);
+    background-size: var(--button-normal-image-size);
+  }
+
   &:focus-visible {
     outline: 2px solid #ffffff;
     outline-offset: 2px;

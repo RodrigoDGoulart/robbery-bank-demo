@@ -25,6 +25,7 @@ type JackpotButtonProps = {
   adjustments: ButtonAdjustments;
   ariaLabel: string;
   className: string;
+  disabled?: boolean;
   images: ButtonImages;
   onClick: () => void;
 };
@@ -53,6 +54,7 @@ export function JackpotButton({
   adjustments,
   ariaLabel,
   className,
+  disabled = false,
   images,
   onClick,
 }: JackpotButtonProps) {
@@ -62,6 +64,7 @@ export function JackpotButton({
       style={getButtonStyle(adjustments, images)}
       type="button"
       aria-label={ariaLabel}
+      disabled={disabled}
       onClick={onClick}
     />
   );

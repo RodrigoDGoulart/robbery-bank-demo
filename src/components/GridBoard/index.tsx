@@ -8,13 +8,111 @@ import { preloadSlotItemAnimations } from "../VerticalSlotReel/SlotItem/preloadS
 import { drawSlotPrize } from "../../services/slotPrizeService";
 import { winningSlotPopUps } from "../WinPopUp/WinPopUp.constants";
 import type { WinPopUpType } from "../WinPopUp/WinPopUp.constants";
+import {
+  BET_VALUES,
+  DEFAULT_PRIZE_VALUE,
+  GRID_BOARD_VALUE_MAX_LENGTH,
+  INITIAL_BALANCE,
+  INITIAL_WIN,
+  NO_PRIZE_CHANCE_PERCENT,
+  REELS_COLUMNS,
+  SLOT_PRIZE_VALUES_BY_RESULT_INDEX,
+} from "./GridBoard.constants";
+import {
+  formatGridBoardValue,
+  getNextBetValue,
+  getSlotPrizeValue,
+} from "../../services/gridBoardValueService";
 import "./GridBoard.scss";
 
 const staticImagePath = "/static_images";
 
-const REELS_COLUMNS = 6;
-const NO_PRIZE_CHANCE_PERCENT = 0;
-const BANK_RESULT_INDEX = 5;
+const VALUE_CHANGE_ANIMATION_MS = 600;
+const WIN_BALANCE_TRANSFER_DELAY_MS = 750;
+
+type GridBoardValueProps = {
+  className: string;
+  maxLength: number;
+  value: number;
+  winPulse?: boolean;
+};
+
+function easeOutCubic(progress: number) {
+  return 1 - Math.pow(1 - progress, 3);
+}
+
+function GridBoardValue({
+  className,
+  maxLength,
+  value,
+  winPulse = false,
+}: GridBoardValueProps) {
+  const [displayValue, setDisplayValue] = useState(value);
+  const [changing, setChanging] = useState(false);
+  const displayValueRef = useRef(value);
+  const animationRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (animationRef.current !== null) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    const from = displayValueRef.current;
+    const to = value;
+    const startedAt = performance.now();
+
+    if (from === to) {
+      setChanging(false);
+      return undefined;
+    }
+
+    setChanging(true);
+
+    const tick = (time: number) => {
+      const progress = Math.min(
+        (time - startedAt) / VALUE_CHANGE_ANIMATION_MS,
+        1,
+      );
+      const nextValue = from + (to - from) * easeOutCubic(progress);
+      const roundedValue = Math.round(nextValue);
+
+      displayValueRef.current = roundedValue;
+      setDisplayValue(roundedValue);
+
+      if (progress < 1) {
+        animationRef.current = requestAnimationFrame(tick);
+        return;
+      }
+
+      displayValueRef.current = to;
+      setDisplayValue(to);
+      setChanging(false);
+    };
+
+    animationRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (animationRef.current !== null) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [value]);
+
+  return (
+    <div
+      className={[
+        "grid-board-value",
+        className,
+        changing ? "grid-board-value-changing" : "",
+        changing && winPulse ? "grid-board-value-win-pulse" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      ${formatGridBoardValue(displayValue, maxLength)}
+    </div>
+  );
+}
 
 function getRandomIndex(max: number) {
   return Math.floor(Math.random() * max);
@@ -63,6 +161,9 @@ function GridBoard() {
     [],
   );
   const [spinSignal, setSpinSignal] = useState(0);
+  const [balance, setBalance] = useState(INITIAL_BALANCE);
+  const [win, setWin] = useState(INITIAL_WIN);
+  const [bet, setBet] = useState<(typeof BET_VALUES)[number]>(BET_VALUES[1]);
   const [resultIndexes, setResultIndexes] = useState<(number | null)[]>(
     Array.from({ length: REELS_COLUMNS }, () => null),
   );
@@ -75,25 +176,48 @@ function GridBoard() {
   );
   const stoppedReelsRef = useRef(0);
   const drawRequestRef = useRef(0);
+  const pendingPrizeValueRef = useRef<number | null>(null);
+  const payoutTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     void preloadSlotItemAnimations();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (payoutTimeoutRef.current !== null) {
+        window.clearTimeout(payoutTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const clearPayoutTimeout = () => {
+    if (payoutTimeoutRef.current !== null) {
+      window.clearTimeout(payoutTimeoutRef.current);
+      payoutTimeoutRef.current = null;
+    }
+  };
+
   const handleLeftGreenButton = () => {
-    stoppedReelsRef.current = 0;
-    setWinning(false);
-    setPendingWinPopUp(null);
-    setActiveWinPopUp(null);
-    setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => null));
-    setSpinSignal((current) => current + 1);
+    setBet(
+      (currentBet) =>
+        getNextBetValue(currentBet, BET_VALUES) as (typeof BET_VALUES)[number],
+    );
   };
 
   const handleRedButton = async () => {
+    if (balance < bet) {
+      return;
+    }
+
     const requestId = drawRequestRef.current + 1;
 
+    clearPayoutTimeout();
     drawRequestRef.current = requestId;
     stoppedReelsRef.current = 0;
+    pendingPrizeValueRef.current = null;
+    setBalance((currentBalance) => currentBalance - bet);
+    setWin(0);
     setWinning(false);
     setPendingWinPopUp(null);
     setActiveWinPopUp(null);
@@ -109,6 +233,13 @@ function GridBoard() {
     }
 
     if (result.hasPrize) {
+      const prizeValue = getSlotPrizeValue(
+        result.prize.resultIndex,
+        SLOT_PRIZE_VALUES_BY_RESULT_INDEX,
+        DEFAULT_PRIZE_VALUE,
+      );
+
+      pendingPrizeValueRef.current = prizeValue;
       setWinning(true);
       setPendingWinPopUp(winningSlotPopUps[result.prize.resultIndex] ?? null);
       setResultIndexes(
@@ -118,6 +249,7 @@ function GridBoard() {
     }
 
     setWinning(false);
+    pendingPrizeValueRef.current = null;
     setPendingWinPopUp(null);
     setResultIndexes(
       getShuffledResultIndexes(staticImageSlotItems.length, REELS_COLUMNS),
@@ -125,11 +257,9 @@ function GridBoard() {
   };
 
   const handleRightGreenButton = () => {
-    stoppedReelsRef.current = 0;
-    setWinning(true);
-    setPendingWinPopUp(null);
-    setActiveWinPopUp(null);
-    setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => BANK_RESULT_INDEX));
+    clearPayoutTimeout();
+    pendingPrizeValueRef.current = null;
+    setBalance(INITIAL_BALANCE);
   };
 
   const handleReelStop = () => {
@@ -139,6 +269,17 @@ function GridBoard() {
       setActiveWinPopUp(pendingWinPopUp);
       setPendingWinPopUp(null);
     }
+
+    if (stoppedReelsRef.current >= REELS_COLUMNS && pendingPrizeValueRef.current) {
+      const prizeValue = pendingPrizeValueRef.current;
+
+      pendingPrizeValueRef.current = null;
+      setWin(prizeValue);
+      payoutTimeoutRef.current = window.setTimeout(() => {
+        setBalance((currentBalance) => currentBalance + prizeValue);
+        payoutTimeoutRef.current = null;
+      }, WIN_BALANCE_TRANSFER_DELAY_MS);
+    }
   };
 
   return (
@@ -147,6 +288,23 @@ function GridBoard() {
         className="grid-board"
         src={`${staticImagePath}/grid-board.png`}
         alt="Jackpot grid board"
+      />
+
+      <GridBoardValue
+        className="grid-board-value-balance"
+        maxLength={GRID_BOARD_VALUE_MAX_LENGTH.balance}
+        value={balance}
+      />
+      <GridBoardValue
+        className="grid-board-value-win"
+        maxLength={GRID_BOARD_VALUE_MAX_LENGTH.win}
+        value={win}
+        winPulse
+      />
+      <GridBoardValue
+        className="grid-board-value-bet"
+        maxLength={GRID_BOARD_VALUE_MAX_LENGTH.bet}
+        value={bet}
       />
 
       <Fox />
@@ -171,6 +329,7 @@ function GridBoard() {
         onLeftGreenClick={handleLeftGreenButton}
         onRedClick={handleRedButton}
         onRightGreenClick={handleRightGreenButton}
+        redDisabled={balance < bet}
       />
 
       {activeWinPopUp && (

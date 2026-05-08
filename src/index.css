@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Grobold";
+  src: url("/fonts/GROBOLD%20(1).TTF") format("truetype");
+  font-display: swap;
+}
+
 html,
 body,
 #root {

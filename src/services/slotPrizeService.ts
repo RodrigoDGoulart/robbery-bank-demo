@@ -20,10 +20,10 @@ export type DrawSlotPrizeResult =
     };
 
 const slotPrizes: SlotPrize[] = [
-  { name: "Letter A", chancePercent: 100, resultIndex: 0 },
-  { name: "Letter J", chancePercent: 100, resultIndex: 1 },
-  { name: "Letter K", chancePercent: 100, resultIndex: 2 },
-  { name: "Letter Q", chancePercent: 100, resultIndex: 3 },
+  { name: "Letter A", chancePercent: 0, resultIndex: 0 },
+  { name: "Letter J", chancePercent: 0, resultIndex: 1 },
+  { name: "Letter K", chancePercent: 0, resultIndex: 2 },
+  { name: "Letter Q", chancePercent: 0, resultIndex: 3 },
   { name: "Number 10", chancePercent: 0, resultIndex: 4 },
   { name: "Bank", chancePercent: 0, resultIndex: 5 },
   { name: "Cell", chancePercent: 0, resultIndex: 6 },
