@@ -1,0 +1,12 @@
+.slot-animation-overlay {
+  position: absolute;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.slot-animation-overlay canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

@@ -3,6 +3,10 @@
   overflow: hidden;
 }
 
+.vertical-slot-reel--initial-hidden {
+  opacity: 0;
+}
+
 .vertical-slot-reel::before,
 .vertical-slot-reel::after {
   content: "";

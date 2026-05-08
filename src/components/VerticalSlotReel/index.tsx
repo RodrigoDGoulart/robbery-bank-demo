@@ -18,6 +18,7 @@ type VerticalSlotReelProps = {
   winning?: boolean;
   className?: string;
   visibleItems?: number;
+  spinEnabled?: boolean;
   onStop?: (index: number) => void;
 };
 
@@ -70,6 +71,7 @@ function VerticalSlotReel({
   winning = false,
   className = "",
   visibleItems = 5,
+  spinEnabled = true,
   onStop,
 }: VerticalSlotReelProps) {
   const reelItemIndexes = useMemo(
@@ -130,10 +132,17 @@ function VerticalSlotReel({
       return;
     }
 
+    if (!spinEnabled) {
+      phaseRef.current = "idle";
+      lastTimeRef.current = null;
+      clearSelection(setSelectedIndex);
+      return;
+    }
+
     phaseRef.current = "spinning";
     lastTimeRef.current = null;
     clearSelection(setSelectedIndex);
-  }, [items.length, reelItemIndexes.length, spinSignal]);
+  }, [items.length, reelItemIndexes.length, spinEnabled, spinSignal]);
 
   useEffect(() => {
     if (!items.length || !reelItemIndexes.length || resultIndex === null) {

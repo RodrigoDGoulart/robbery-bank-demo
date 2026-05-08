@@ -46,12 +46,10 @@ export function loadFrameByFrameAssets(symbol: FrameByFrameSlotSymbolConfig) {
     return cachedSpritesheet;
   }
 
-  const spritesheetPromise = Promise.all([
-    fetch(symbol.jsonPath),
-    loadImageElement(symbol.imagePath),
-  ]).then(async ([spritesheetResponse, image]) => {
+  const spritesheetPromise = fetch(symbol.jsonPath).then(async (spritesheetResponse) => {
     const spritesheetData =
       (await spritesheetResponse.json()) as SpritesheetData;
+    const image = await loadImageElement(symbol.imagePath);
     const texture = Texture.from(image);
     const spritesheet = new Spritesheet(texture, spritesheetData);
 

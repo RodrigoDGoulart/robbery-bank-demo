@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Fox from "../Fox";
 import JackpotButtons from "../JackpotButtons";
+import SlotAnimationOverlay from "../SlotAnimationOverlay";
 import VerticalSlotReel from "../VerticalSlotReel";
 import WinPopUp from "../WinPopUp";
 import { staticImageSlotItems } from "../VerticalSlotReel/StaticImageSlotItems";
-import { preloadSlotItemAnimations } from "../VerticalSlotReel/SlotItem/preloadSlotItemAnimations";
+import { slotItemConfigs } from "../VerticalSlotReel/SlotItem/SlotItem.constants";
 import { drawSlotPrize } from "../../services/slotPrizeService";
 import { winningSlotPopUps } from "../WinPopUp/WinPopUp.constants";
 import type { WinPopUpType } from "../WinPopUp/WinPopUp.constants";
@@ -27,6 +28,13 @@ import "./GridBoard.scss";
 
 const staticImagePath = "/static_images";
 
+const SLOT_OVERLAY_VISIBLE_ROWS = 5;
+const SLOT_OVERLAY_WIDTH = 738;
+const SLOT_OVERLAY_HEIGHT = 545;
+const SLOT_OVERLAY_CELL_WIDTH = 120;
+const SLOT_OVERLAY_CELL_HEIGHT = 109;
+const SLOT_OVERLAY_COLUMN_GAP = "space-between";
+const SLOT_OVERLAY_ROW_GAP = "space-between";
 const VALUE_CHANGE_ANIMATION_MS = 600;
 const WIN_BALANCE_TRANSFER_DELAY_MS = 750;
 
@@ -160,6 +168,15 @@ function GridBoard() {
     () => createReelItemOrders(staticImageSlotItems.length, REELS_COLUMNS),
     [],
   );
+  const initialSlotAnimationColumns = useMemo(
+    () =>
+      reelItemOrders.map((itemOrder) =>
+        itemOrder
+          .slice(0, SLOT_OVERLAY_VISIBLE_ROWS)
+          .map((itemIndex) => slotItemConfigs[itemIndex]),
+      ),
+    [reelItemOrders],
+  );
   const [spinSignal, setSpinSignal] = useState(0);
   const [balance, setBalance] = useState(INITIAL_BALANCE);
   const [win, setWin] = useState(INITIAL_WIN);
@@ -175,14 +192,11 @@ function GridBoard() {
   const [activeWinPopUp, setActiveWinPopUp] = useState<WinPopUpType | null>(
     null,
   );
+  const [showInitialSlotAnimation, setShowInitialSlotAnimation] = useState(true);
   const stoppedReelsRef = useRef(0);
   const drawRequestRef = useRef(0);
   const pendingPrizeValueRef = useRef<number | null>(null);
   const payoutTimeoutRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    void preloadSlotItemAnimations();
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -217,6 +231,7 @@ function GridBoard() {
     drawRequestRef.current = requestId;
     stoppedReelsRef.current = 0;
     pendingPrizeValueRef.current = null;
+    setShowInitialSlotAnimation(false);
     setBalance((currentBalance) => currentBalance - bet);
     setWin(0);
     setWinning(false);
@@ -323,14 +338,32 @@ function GridBoard() {
             height={545}
             itemIndexes={reelItemOrders[i]}
             width={120}
+            className={
+              showInitialSlotAnimation ? "vertical-slot-reel--initial-hidden" : ""
+            }
             items={staticImageSlotItems}
             resultIndex={resultIndexes[i]}
+            spinEnabled={!showInitialSlotAnimation}
             spinSignal={spinSignal}
             winning={winning}
             onStop={handleReelStop}
           />
         ))}
       </div>
+
+      {showInitialSlotAnimation && (
+        <SlotAnimationOverlay
+          className="slot-animation-overlay--grid-board"
+          columns={initialSlotAnimationColumns}
+          height={SLOT_OVERLAY_HEIGHT}
+          width={SLOT_OVERLAY_WIDTH}
+          cellHeight={SLOT_OVERLAY_CELL_HEIGHT}
+          cellWidth={SLOT_OVERLAY_CELL_WIDTH}
+          columnGap={SLOT_OVERLAY_COLUMN_GAP}
+          rowGap={SLOT_OVERLAY_ROW_GAP}
+          visibleRows={SLOT_OVERLAY_VISIBLE_ROWS}
+        />
+      )}
 
       <JackpotButtons
         onLeftGreenClick={handleLeftGreenButton}

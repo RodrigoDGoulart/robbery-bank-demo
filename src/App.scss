@@ -4,3 +4,28 @@
   place-items: center;
   overflow: hidden;
 }
+
+.app-shell--loading {
+  background:
+    radial-gradient(circle at center, rgba(255, 221, 108, 0.18), transparent 36%),
+    #11100f;
+}
+
+.app-loading {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  font-family: "Grobold", sans-serif;
+  color: #f7d56b;
+  text-shadow: 0 2px 0 #4c2609;
+}
+
+.app-loading__title {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.app-loading__progress {
+  font-size: 22px;
+  line-height: 1;
+}
