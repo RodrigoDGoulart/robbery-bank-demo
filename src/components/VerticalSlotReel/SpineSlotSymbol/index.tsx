@@ -7,8 +7,8 @@ import "./SpineSlotSymbol.scss";
 
 type SpineSlotSymbolProps = {
   symbol: SpineSlotSymbolConfig;
-  selected: boolean;
-  winning: boolean;
+  playing?: boolean;
+  onReady?: () => void;
   loop?: boolean;
   canvasWidth?: number;
   canvasHeight?: number;
@@ -48,16 +48,21 @@ function applyVisibleSlotMask(spine: Spine, symbol: SpineSlotSymbolConfig) {
 
 function SpineSlotSymbol({
   symbol,
-  selected,
-  winning,
+  playing = false,
+  onReady,
   loop = false,
   canvasWidth = 108,
   canvasHeight = 108,
 }: SpineSlotSymbolProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spineRef = useRef<Spine | null>(null);
+  const playingRef = useRef(playing);
   const playRequestRef = useRef(0);
   const frameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    playingRef.current = playing;
+  }, [playing]);
 
   const stopAnimationFrame = useCallback(() => {
     playRequestRef.current += 1;
@@ -170,8 +175,9 @@ function SpineSlotSymbol({
 
       spineRef.current = spine;
       pixiApp.stage.addChild(spine);
+      onReady?.();
 
-      if (selected && winning) {
+      if (playingRef.current) {
         playAnimation(spine);
       }
     }
@@ -187,18 +193,25 @@ function SpineSlotSymbol({
   }, [
     canvasHeight,
     canvasWidth,
+    onReady,
     playAnimation,
-    selected,
     stopAnimationFrame,
     symbol,
-    winning,
   ]);
 
   useEffect(() => {
     const spine = spineRef.current;
 
-    if (!spine || !selected || !winning) {
+    if (!spine) {
       stopAnimationFrame();
+      return undefined;
+    }
+
+    if (!playing) {
+      stopAnimationFrame();
+      spine.state.setAnimation(0, symbol.animation, false);
+      spine.update(0);
+      applyVisibleSlotMask(spine, symbol);
       return undefined;
     }
 
@@ -207,7 +220,7 @@ function SpineSlotSymbol({
     return () => {
       stopAnimationFrame();
     };
-  }, [playAnimation, selected, stopAnimationFrame, symbol.animation, winning]);
+  }, [playAnimation, playing, stopAnimationFrame, symbol]);
 
   return <div className="spine-slot-symbol" ref={containerRef} aria-hidden="true" />;
 }

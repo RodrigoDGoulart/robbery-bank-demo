@@ -4,7 +4,10 @@ import JackpotButtons from "../JackpotButtons";
 import VerticalSlotReel from "../VerticalSlotReel";
 import WinPopUp from "../WinPopUp";
 import { staticImageSlotItems } from "../VerticalSlotReel/StaticImageSlotItems";
-import { preloadSlotItemAnimations } from "../VerticalSlotReel/SlotItem/preloadSlotItemAnimations";
+import {
+  preloadSlotItemAnimation,
+  preloadSlotItemAnimations,
+} from "../VerticalSlotReel/SlotItem/preloadSlotItemAnimations";
 import { drawSlotPrize } from "../../services/slotPrizeService";
 import { winningSlotPopUps } from "../WinPopUp/WinPopUp.constants";
 import type { WinPopUpType } from "../WinPopUp/WinPopUp.constants";
@@ -168,6 +171,7 @@ function GridBoard() {
     Array.from({ length: REELS_COLUMNS }, () => null),
   );
   const [winning, setWinning] = useState(false);
+  const [slotAnimationsReady, setSlotAnimationsReady] = useState(false);
   const [foxHaveWinned, setFoxHaveWinned] = useState(false);
   const [pendingWinPopUp, setPendingWinPopUp] = useState<WinPopUpType | null>(
     null,
@@ -181,7 +185,17 @@ function GridBoard() {
   const payoutTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    void preloadSlotItemAnimations();
+    let cancelled = false;
+
+    void preloadSlotItemAnimations().then(() => {
+      if (!cancelled) {
+        setSlotAnimationsReady(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -207,7 +221,7 @@ function GridBoard() {
   };
 
   const handleRedButton = async () => {
-    if (balance < bet) {
+    if (!slotAnimationsReady || balance < bet) {
       return;
     }
 
@@ -240,6 +254,8 @@ function GridBoard() {
         SLOT_PRIZE_VALUES_BY_RESULT_INDEX,
         DEFAULT_PRIZE_VALUE,
       );
+
+      void preloadSlotItemAnimation(result.prize.resultIndex);
 
       pendingPrizeValueRef.current = prizeValue;
       setWinning(true);
@@ -286,6 +302,10 @@ function GridBoard() {
     }
   };
 
+  if (!slotAnimationsReady) {
+    return <div className="game-board-loading">carregando...</div>;
+  }
+
   return (
     <div className="game-board-container">
       <img
@@ -316,27 +336,35 @@ function GridBoard() {
         onHaveWinnedChange={setFoxHaveWinned}
       />
 
-      <div className="reels-container">
-        {Array.from({ length: REELS_COLUMNS }, (_, i) => (
-          <VerticalSlotReel
-            key={i}
-            height={545}
-            itemIndexes={reelItemOrders[i]}
-            width={120}
-            items={staticImageSlotItems}
-            resultIndex={resultIndexes[i]}
-            spinSignal={spinSignal}
-            winning={winning}
-            onStop={handleReelStop}
-          />
-        ))}
+      <div
+        className={[
+          "reels-container",
+          slotAnimationsReady ? "reels-container--ready" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {slotAnimationsReady &&
+          Array.from({ length: REELS_COLUMNS }, (_, i) => (
+            <VerticalSlotReel
+              key={i}
+              height={545}
+              itemIndexes={reelItemOrders[i]}
+              width={120}
+              items={staticImageSlotItems}
+              resultIndex={resultIndexes[i]}
+              spinSignal={spinSignal}
+              winning={winning}
+              onStop={handleReelStop}
+            />
+          ))}
       </div>
 
       <JackpotButtons
         onLeftGreenClick={handleLeftGreenButton}
         onRedClick={handleRedButton}
         onRightGreenClick={handleRightGreenButton}
-        redDisabled={balance < bet}
+        redDisabled={!slotAnimationsReady || balance < bet}
       />
 
       {activeWinPopUp && (

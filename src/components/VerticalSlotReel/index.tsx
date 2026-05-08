@@ -84,6 +84,7 @@ function VerticalSlotReel({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const positionRef = useRef(0);
   const phaseRef = useRef<"idle" | "spinning" | "stopping">("idle");
+  const previousSpinSignalRef = useRef(spinSignal);
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
   const stopRef = useRef({
@@ -130,6 +131,11 @@ function VerticalSlotReel({
       return;
     }
 
+    if (spinSignal === previousSpinSignalRef.current) {
+      return;
+    }
+
+    previousSpinSignalRef.current = spinSignal;
     phaseRef.current = "spinning";
     lastTimeRef.current = null;
     clearSelection(setSelectedIndex);

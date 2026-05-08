@@ -1,5 +1,10 @@
+import { useCallback, useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import FrameByFrameSlotSymbol from "../FrameByFrameSlotSymbol";
+import {
+  getLoadedFrameByFramePreviewSrc,
+  loadFrameByFramePreviewSrc,
+} from "../FrameByFrameSlotSymbol/frameByFrameAssets";
 import SpineSlotSymbol from "../SpineSlotSymbol";
 import type {
   SlotItemConfig,
@@ -25,8 +30,52 @@ function getVisualStyle(visual: SlotItemVisualConfig): CSSProperties {
   };
 }
 
+function getInitialPreviewSrc(item: SlotItemConfig) {
+  if (item.animation?.type === "frame-by-frame") {
+    return getLoadedFrameByFramePreviewSrc(item.animation.symbol) ?? "";
+  }
+
+  return item.staticImage.src;
+}
+
+function useSlotItemPreviewSrc(item: SlotItemConfig) {
+  const [previewSrc, setPreviewSrc] = useState(() => getInitialPreviewSrc(item));
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (item.animation?.type !== "frame-by-frame") {
+      return undefined;
+    }
+
+    void loadFrameByFramePreviewSrc(item.animation.symbol).then((loadedSrc) => {
+      if (!cancelled) {
+        setPreviewSrc(loadedSrc);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [item]);
+
+  return previewSrc || item.staticImage.src;
+}
+
 function SlotItem({ item, selected, winning }: SlotItemProps) {
-  const animation = selected && winning ? item.animation : undefined;
+  const animation = item.animation;
+  const playing = selected && winning;
+  const previewSrc = useSlotItemPreviewSrc(item);
+  const [animationReady, setAnimationReady] = useState(false);
+  const handleAnimationReady = useCallback(() => {
+    setAnimationReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!playing) {
+      queueMicrotask(() => setAnimationReady(false));
+    }
+  }, [playing]);
 
   if (animation) {
     const animationStyle = getVisualStyle(animation.visual);
@@ -40,22 +89,58 @@ function SlotItem({ item, selected, winning }: SlotItemProps) {
         : undefined;
 
     return (
-      <div className="slot-item slot-item--animation" style={animationStyle}>
-        {animation.type === "frame-by-frame" ? (
-          <FrameByFrameSlotSymbol
-            canvasHeight={canvasHeight}
-            canvasWidth={canvasWidth}
-            symbol={animation.symbol}
-          />
-        ) : (
-          <SpineSlotSymbol
-            canvasHeight={canvasHeight}
-            canvasWidth={canvasWidth}
-            loop
-            selected={selected}
-            symbol={animation.symbol}
-            winning={winning}
-          />
+      <div
+        className={[
+          "slot-item",
+          "slot-item--animation",
+          playing ? "slot-item--playing" : "",
+          selected ? "slot-item--selected" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        style={animationStyle}
+        aria-label={item.name}
+      >
+        <img
+          className={[
+            "slot-item__preview",
+            animationReady ? "slot-item__preview--hidden" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          src={previewSrc}
+          alt={item.name}
+          draggable={false}
+        />
+
+        {playing && (
+          <div
+            className={[
+              "slot-item__animation-layer",
+              animationReady ? "slot-item__animation-layer--ready" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {animation.type === "frame-by-frame" ? (
+              <FrameByFrameSlotSymbol
+                canvasHeight={canvasHeight}
+                canvasWidth={canvasWidth}
+                onReady={handleAnimationReady}
+                playing={playing}
+                symbol={animation.symbol}
+              />
+            ) : (
+              <SpineSlotSymbol
+                canvasHeight={canvasHeight}
+                canvasWidth={canvasWidth}
+                loop
+                onReady={handleAnimationReady}
+                playing={playing}
+                symbol={animation.symbol}
+              />
+            )}
+          </div>
         )}
       </div>
     );
@@ -71,7 +156,7 @@ function SlotItem({ item, selected, winning }: SlotItemProps) {
         .filter(Boolean)
         .join(" ")}
       style={getVisualStyle(item.staticImage.visual)}
-      src={item.staticImage.src}
+      src={previewSrc}
       alt={item.name}
       draggable={false}
     />

@@ -1,17 +1,33 @@
-import { loadFrameByFrameAssets } from "../FrameByFrameSlotSymbol/frameByFrameAssets";
+import {
+  loadFrameByFrameAssets,
+  loadFrameByFramePreviewSrc,
+} from "../FrameByFrameSlotSymbol/frameByFrameAssets";
 import { preloadSpineSymbolAssets } from "../SpineSlotSymbol/spineAssets";
 import { slotItemConfigs } from "./SlotItem.constants";
 
 let preloadPromise: Promise<void> | null = null;
 
-function preloadStaticImage(src: string) {
-  return new Promise<void>((resolve) => {
-    const image = new Image();
+function getSlotItemAnimationPreloadTasks(itemIndex: number): Promise<unknown>[] {
+  const item = slotItemConfigs[itemIndex];
 
-    image.onload = () => resolve();
-    image.onerror = () => resolve();
-    image.src = src;
-  });
+  if (!item?.animation) {
+    return [];
+  }
+
+  if (item.animation.type === "frame-by-frame") {
+    return [
+      loadFrameByFrameAssets(item.animation.symbol),
+      loadFrameByFramePreviewSrc(item.animation.symbol),
+    ];
+  }
+
+  return [preloadSpineSymbolAssets(item.animation.symbol)];
+}
+
+export function preloadSlotItemAnimation(itemIndex: number) {
+  return Promise.all(getSlotItemAnimationPreloadTasks(itemIndex)).then(
+    () => undefined,
+  );
 }
 
 export function preloadSlotItemAnimations() {
@@ -20,26 +36,15 @@ export function preloadSlotItemAnimations() {
   }
 
   preloadPromise = Promise.all(
-    slotItemConfigs.flatMap((item) => {
-      const preloadTasks: Promise<unknown>[] = [
-        preloadStaticImage(item.staticImage.src),
-      ];
-
-      if (item.animation?.type === "frame-by-frame") {
-        preloadTasks.push(loadFrameByFrameAssets(item.animation.symbol));
-      }
-
-      if (item.animation?.type === "spine") {
-        preloadTasks.push(preloadSpineSymbolAssets(item.animation.symbol));
-      }
-
-      return preloadTasks;
-    }),
+    slotItemConfigs.flatMap((_, itemIndex) =>
+      getSlotItemAnimationPreloadTasks(itemIndex),
+    ),
   )
     .then(() => undefined)
     .catch((error: unknown) => {
       preloadPromise = null;
       console.error("Failed to preload slot item animations", error);
+      throw error;
     });
 
   return preloadPromise;
