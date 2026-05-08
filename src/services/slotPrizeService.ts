@@ -20,11 +20,16 @@ export type DrawSlotPrizeResult =
     };
 
 const slotPrizes: SlotPrize[] = [
-  { name: "Green jackpot", chancePercent: 60, resultIndex: 1 },
-  { name: "Blue bonus", chancePercent: 50, resultIndex: 2 },
-  { name: "Yellow chest", chancePercent: 25, resultIndex: 3 },
-  { name: "Pink rare", chancePercent: 8, resultIndex: 4 },
-  { name: "Cyan super rare", chancePercent: 1, resultIndex: 5 },
+  { name: "Letter A", chancePercent: 100, resultIndex: 0 },
+  { name: "Letter J", chancePercent: 100, resultIndex: 1 },
+  { name: "Letter K", chancePercent: 100, resultIndex: 2 },
+  { name: "Letter Q", chancePercent: 100, resultIndex: 3 },
+  { name: "Number 10", chancePercent: 100, resultIndex: 4 },
+  { name: "Bank", chancePercent: 100, resultIndex: 5 },
+  { name: "Cell", chancePercent: 100, resultIndex: 6 },
+  { name: "Dynamit", chancePercent: 100, resultIndex: 7 },
+  { name: "Handcuffs", chancePercent: 100, resultIndex: 8 },
+  { name: "Safe", chancePercent: 100, resultIndex: 9 },
 ];
 
 function wait(delayMs: number) {
@@ -56,7 +61,7 @@ function pickPrizeByChance() {
 }
 
 export async function drawSlotPrize({
-  noPrizeChancePercent = 70,
+  noPrizeChancePercent = 0,
   delayMs = 700,
 }: DrawSlotPrizeOptions = {}): Promise<DrawSlotPrizeResult> {
   await wait(delayMs);

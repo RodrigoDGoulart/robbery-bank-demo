@@ -1,15 +1,17 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Fox from "../Fox";
 import JackpotButtons from "../JackpotButtons";
 import VerticalSlotReel from "../VerticalSlotReel";
-import { coloredCircleItems } from "../VerticalSlotReel/demo/coloredCircleItems";
+import { staticImageSlotItems } from "../VerticalSlotReel/StaticImageSlotItems";
+import { preloadSlotItemAnimations } from "../VerticalSlotReel/SlotItem/preloadSlotItemAnimations";
 import { drawSlotPrize } from "../../services/slotPrizeService";
 import "./GridBoard.scss";
 
 const staticImagePath = "/static_images";
 
 const REELS_COLUMNS = 6;
-const NO_PRIZE_CHANCE_PERCENT = 45;
+const NO_PRIZE_CHANCE_PERCENT = 0;
+const BANK_RESULT_INDEX = 5;
 
 function getRandomIndex(max: number) {
   return Math.floor(Math.random() * max);
@@ -54,7 +56,7 @@ function createReelItemOrders(totalItems: number, totalReels: number) {
 
 function GridBoard() {
   const reelItemOrders = useMemo(
-    () => createReelItemOrders(coloredCircleItems.length, REELS_COLUMNS),
+    () => createReelItemOrders(staticImageSlotItems.length, REELS_COLUMNS),
     [],
   );
   const [spinSignal, setSpinSignal] = useState(0);
@@ -63,6 +65,10 @@ function GridBoard() {
   );
   const [winning, setWinning] = useState(false);
   const drawRequestRef = useRef(0);
+
+  useEffect(() => {
+    void preloadSlotItemAnimations();
+  }, []);
 
   const handleLeftGreenButton = () => {
     setWinning(false);
@@ -96,13 +102,13 @@ function GridBoard() {
 
     setWinning(false);
     setResultIndexes(
-      getShuffledResultIndexes(coloredCircleItems.length, REELS_COLUMNS),
+      getShuffledResultIndexes(staticImageSlotItems.length, REELS_COLUMNS),
     );
   };
 
   const handleRightGreenButton = () => {
     setWinning(true);
-    setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => 1));
+    setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => BANK_RESULT_INDEX));
   };
 
   return (
@@ -122,7 +128,7 @@ function GridBoard() {
             height={545}
             itemIndexes={reelItemOrders[i]}
             width={120}
-            items={coloredCircleItems}
+            items={staticImageSlotItems}
             resultIndex={resultIndexes[i]}
             spinSignal={spinSignal}
             winning={winning}

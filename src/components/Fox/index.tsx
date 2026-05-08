@@ -1,40 +1,32 @@
-import { Spine } from "@esotericsoftware/spine-pixi-v8";
-import { Application, Assets } from "pixi.js";
+import { AnimatedSprite, Application, Spritesheet, Texture } from "pixi.js";
+import type { SpritesheetData } from "pixi.js";
 import { useEffect, useRef } from "react";
 import "./Fox.scss";
 
 const FOX_ASSET_PATH = "/SpineFiles/Fox";
-const FOX_SKELETON_PATH = `${FOX_ASSET_PATH}/Fox.json`;
-const FOX_ATLAS_PATH = `${FOX_ASSET_PATH}/Fox.atlas`;
-const FOX_SKELETON_ALIAS = "foxSkeleton";
-const FOX_ATLAS_ALIAS = "foxAtlas";
-const FOX_ANIMATION = "Idle";
+const FOX_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox.json`;
+const FOX_IMAGE_PATH = `${FOX_ASSET_PATH}/fox.png`;
 const FOX_CANVAS_WIDTH = 340;
 const FOX_CANVAS_HEIGHT = 520;
-const FOX_SCALE = 0.19;
-const FOX_CANVAS_PADDING = 8;
 const FOX_ANIMATION_FPS = 30;
-const FOX_ANIMATION_STEP = 1 / FOX_ANIMATION_FPS;
-const FOX_SKELETON_BOUNDS = {
-  x: -896.42,
-  y: -1321.83,
-  width: 1736.42,
-};
 
-function registerFoxAssets() {
-  if (!Assets.resolver.hasKey(FOX_SKELETON_ALIAS)) {
-    Assets.add({
-      alias: FOX_SKELETON_ALIAS,
-      src: FOX_SKELETON_PATH,
-    });
-  }
+function getSortedFoxFrameNames(frames: SpritesheetData["frames"]) {
+  return Object.keys(frames).sort((leftFrameName, rightFrameName) => {
+    const leftIndex = Number(leftFrameName.split("_").at(-1));
+    const rightIndex = Number(rightFrameName.split("_").at(-1));
 
-  if (!Assets.resolver.hasKey(FOX_ATLAS_ALIAS)) {
-    Assets.add({
-      alias: FOX_ATLAS_ALIAS,
-      src: FOX_ATLAS_PATH,
-    });
-  }
+    return leftIndex - rightIndex;
+  });
+}
+
+function loadImageElement(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error(`Failed to load image ${src}`));
+    image.src = src;
+  });
 }
 
 function Fox() {
@@ -80,41 +72,41 @@ function Fox() {
 
       container.appendChild(pixiApp.canvas);
 
-      registerFoxAssets();
-
-      await Assets.load([FOX_SKELETON_ALIAS, FOX_ATLAS_ALIAS]);
+      const [spritesheetResponse, image] = await Promise.all([
+        fetch(FOX_SPRITESHEET_PATH),
+        loadImageElement(FOX_IMAGE_PATH),
+      ]);
 
       if (isCancelled || isDestroyed) return;
 
-      const fox = Spine.from({
-        skeleton: FOX_SKELETON_ALIAS,
-        atlas: FOX_ATLAS_ALIAS,
-        autoUpdate: false,
+      const spritesheetData =
+        (await spritesheetResponse.json()) as SpritesheetData;
+      const texture = Texture.from(image);
+      const spritesheet = new Spritesheet(texture, spritesheetData);
+
+      await spritesheet.parse();
+
+      if (isCancelled || isDestroyed) return;
+
+      const frameNames = getSortedFoxFrameNames(spritesheetData.frames);
+      const frames = frameNames.map((frameName) => spritesheet.textures[frameName]);
+      const fox = new AnimatedSprite({
+        textures: frames,
+        animationSpeed: FOX_ANIMATION_FPS / 60,
+        autoPlay: true,
+        loop: true,
+        updateAnchor: true,
       });
 
-      fox.state.setAnimation(0, FOX_ANIMATION, true);
-      fox.scale.set(FOX_SCALE);
-      fox.position.set(
-        -FOX_SKELETON_BOUNDS.x * FOX_SCALE + FOX_CANVAS_PADDING,
-        -FOX_SKELETON_BOUNDS.y * FOX_SCALE + FOX_CANVAS_PADDING
-      );
+      fox.anchor.set(0.5);
+      fox.scale.set(Math.min(FOX_CANVAS_WIDTH / 425, FOX_CANVAS_HEIGHT / 582));
+      fox.position.set(FOX_CANVAS_WIDTH / 2, FOX_CANVAS_HEIGHT / 2);
 
       pixiApp.stage.addChild(fox);
-
-      let elapsedAnimationTime = 0;
-
-      pixiApp.ticker.add((ticker) => {
-        elapsedAnimationTime += ticker.deltaMS / 1000;
-
-        while (elapsedAnimationTime >= FOX_ANIMATION_STEP) {
-          fox.update(FOX_ANIMATION_STEP);
-          elapsedAnimationTime -= FOX_ANIMATION_STEP;
-        }
-      });
     }
 
     setupFoxAnimation().catch((error: unknown) => {
-      console.error("Failed to load Fox Spine animation", error);
+      console.error("Failed to load Fox frame-by-frame animation", error);
     });
 
     return () => {

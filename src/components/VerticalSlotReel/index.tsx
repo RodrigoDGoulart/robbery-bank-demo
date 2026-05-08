@@ -22,9 +22,8 @@ type VerticalSlotReelProps = {
 };
 
 const MIN_STOP_DURATION = 1100;
-const SPIN_SPEED = 920;
+const SPIN_SPEED_ITEMS_PER_SECOND = 8.5;
 const EXTRA_STOP_LOOPS = 3;
-const BUFFER_ITEM_COUNT = 1;
 
 function easeOutCubic(progress: number) {
   return 1 - Math.pow(1 - progress, 3);
@@ -80,7 +79,6 @@ function VerticalSlotReel({
   const safeVisibleItems = Math.max(3, visibleItems | 1);
   const itemHeight = height / safeVisibleItems;
   const centerOffset = Math.floor(safeVisibleItems / 2);
-  const stripHeight = itemHeight * reelItemIndexes.length;
 
   const [position, setPosition] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -101,13 +99,12 @@ function VerticalSlotReel({
       return [];
     }
 
-    return Array.from({ length: safeVisibleItems + 2 }, (_, cellIndex) => {
-      const rawIndex =
-        Math.floor(position / itemHeight) + cellIndex - BUFFER_ITEM_COUNT;
+    return Array.from({ length: safeVisibleItems + 1 }, (_, cellIndex) => {
+      const rawIndex = Math.floor(position) + cellIndex;
       const reelIndex = mod(rawIndex, reelItemIndexes.length);
       const itemIndex = reelItemIndexes[reelIndex];
       const item = items[itemIndex];
-      const isCenter = cellIndex === centerOffset + BUFFER_ITEM_COUNT;
+      const isCenter = cellIndex === centerOffset;
 
       return {
         key: `${rawIndex}-${item.id}`,
@@ -118,7 +115,6 @@ function VerticalSlotReel({
     });
   }, [
     centerOffset,
-    itemHeight,
     items,
     position,
     reelItemIndexes,
@@ -152,24 +148,24 @@ function VerticalSlotReel({
     }
 
     const currentPosition = positionRef.current;
-    const currentCenterIndex = mod(
-      Math.floor(currentPosition / itemHeight) +
-        centerOffset +
-        BUFFER_ITEM_COUNT,
+    const currentTopIndex = Math.floor(currentPosition);
+    const targetTopIndex = mod(
+      targetReelIndex - centerOffset,
       reelItemIndexes.length,
     );
     const deltaItems = mod(
-      targetReelIndex - currentCenterIndex,
+      targetTopIndex - mod(currentTopIndex, reelItemIndexes.length),
       reelItemIndexes.length,
     );
-    const distance =
-      (EXTRA_STOP_LOOPS * reelItemIndexes.length + deltaItems) * itemHeight;
+    const targetPosition =
+      currentTopIndex + EXTRA_STOP_LOOPS * reelItemIndexes.length + deltaItems;
+    const distance = targetPosition - currentPosition;
 
     stopRef.current = {
       from: currentPosition,
-      to: currentPosition + distance,
+      to: targetPosition,
       startTime: performance.now(),
-      duration: MIN_STOP_DURATION + Math.min(distance * 0.18, 700),
+      duration: MIN_STOP_DURATION + Math.min(distance * itemHeight * 0.18, 700),
       resultIndex: normalizedResult,
     };
     phaseRef.current = "stopping";
@@ -194,7 +190,8 @@ function VerticalSlotReel({
       if (phase === "spinning") {
         const lastTime = lastTimeRef.current ?? time;
         const delta = (time - lastTime) / 1000;
-        const nextPosition = positionRef.current + delta * SPIN_SPEED;
+        const nextPosition =
+          positionRef.current + delta * SPIN_SPEED_ITEMS_PER_SECOND;
 
         lastTimeRef.current = time;
         positionRef.current = nextPosition;
@@ -211,8 +208,7 @@ function VerticalSlotReel({
         setPosition(nextPosition);
 
         if (progress >= 1) {
-          const snappedPosition =
-            Math.round(stop.to / itemHeight) * itemHeight;
+          const snappedPosition = mod(stop.to, reelItemIndexes.length);
 
           positionRef.current = snappedPosition;
           setPosition(snappedPosition);
@@ -239,7 +235,7 @@ function VerticalSlotReel({
     return null;
   }
 
-  const translateY = -(position % stripHeight) % itemHeight;
+  const translateY = -(position - Math.floor(position)) * itemHeight;
 
   return (
     <div
@@ -251,7 +247,7 @@ function VerticalSlotReel({
         className="vertical-slot-reel__strip"
         style={{
           height: itemHeight * visibleCells.length,
-          transform: `translateY(${translateY - itemHeight}px)`,
+          transform: `translateY(${translateY}px)`,
         }}
       >
         {visibleCells.map(({ key, item, itemIndex, isCenter }) => (

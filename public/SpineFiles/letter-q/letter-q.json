@@ -1,1103 +1,1103 @@
 {
   "frames": {
-    "Handcuffs_23": {
+    "Littera_Q_35": {
       "frame": {
-        "x": 16,
-        "y": 16,
-        "w": 168,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 5,
-        "y": 25,
-        "w": 168,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_22": {
-      "frame": {
-        "x": 216,
-        "y": 16,
-        "w": 163,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 10,
-        "y": 25,
-        "w": 163,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_24": {
-      "frame": {
-        "x": 411,
-        "y": 16,
-        "w": 163,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 9,
-        "y": 26,
-        "w": 163,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_09": {
-      "frame": {
-        "x": 606,
-        "y": 16,
-        "w": 162,
-        "h": 154
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 18,
-        "y": 7,
-        "w": 162,
-        "h": 154
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_08": {
-      "frame": {
-        "x": 16,
-        "y": 187,
-        "w": 162,
-        "h": 151
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 16,
-        "y": 10,
-        "w": 162,
-        "h": 151
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_10": {
-      "frame": {
-        "x": 210,
-        "y": 187,
-        "w": 161,
-        "h": 155
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 21,
-        "y": 7,
-        "w": 161,
-        "h": 155
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_25": {
-      "frame": {
-        "x": 16,
-        "y": 370,
-        "w": 160,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 11,
-        "y": 27,
-        "w": 160,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_07": {
-      "frame": {
-        "x": 403,
-        "y": 187,
-        "w": 158,
-        "h": 152
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 18,
-        "y": 10,
-        "w": 158,
-        "h": 152
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_21": {
-      "frame": {
-        "x": 800,
-        "y": 16,
-        "w": 158,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 16,
-        "y": 24,
-        "w": 158,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_11": {
-      "frame": {
-        "x": 990,
-        "y": 16,
-        "w": 156,
-        "h": 153
+        "x": 12,
+        "y": 12,
+        "w": 173,
+        "h": 137
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 24,
-        "y": 9,
-        "w": 156,
-        "h": 153
+        "y": 22,
+        "w": 173,
+        "h": 137
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_26": {
+    "Littera_Q_34": {
       "frame": {
-        "x": 800,
-        "y": 187,
-        "w": 155,
-        "h": 139
+        "x": 209,
+        "y": 12,
+        "w": 171,
+        "h": 137
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 16,
-        "y": 27,
-        "w": 155,
-        "h": 139
+        "x": 25,
+        "y": 22,
+        "w": 171,
+        "h": 137
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_06": {
+    "Littera_Q_36": {
       "frame": {
-        "x": 593,
-        "y": 202,
-        "w": 152,
-        "h": 149
+        "x": 404,
+        "y": 12,
+        "w": 163,
+        "h": 137
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 21,
-        "y": 14,
-        "w": 152,
-        "h": 149
+        "x": 25,
+        "y": 22,
+        "w": 163,
+        "h": 137
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_12": {
+    "Littera_Q_33": {
       "frame": {
-        "x": 403,
-        "y": 371,
-        "w": 151,
-        "h": 149
+        "x": 591,
+        "y": 12,
+        "w": 163,
+        "h": 135
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 27,
-        "y": 13,
-        "w": 151,
-        "h": 149
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_38": {
-      "frame": {
-        "x": 208,
-        "y": 383,
-        "w": 151,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 23,
-        "y": 26,
-        "w": 151,
-        "h": 140
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_20": {
-      "frame": {
-        "x": 16,
-        "y": 541,
-        "w": 150,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 23,
+        "x": 25,
         "y": 23,
-        "w": 150,
-        "h": 140
+        "w": 163,
+        "h": 135
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_27": {
+    "Littera_Q_37": {
       "frame": {
-        "x": 1178,
-        "y": 16,
-        "w": 150,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 21,
-        "y": 27,
-        "w": 150,
-        "h": 140
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_39": {
-      "frame": {
-        "x": 1178,
-        "y": 188,
-        "w": 149,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 25,
-        "y": 26,
-        "w": 149,
-        "h": 140
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_37": {
-      "frame": {
-        "x": 987,
-        "y": 201,
-        "w": 148,
-        "h": 141
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 25,
-        "y": 26,
-        "w": 148,
-        "h": 141
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_05": {
-      "frame": {
-        "x": 987,
-        "y": 374,
-        "w": 146,
-        "h": 148
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 24,
-        "y": 16,
-        "w": 146,
-        "h": 148
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_40": {
-      "frame": {
-        "x": 777,
-        "y": 358,
-        "w": 146,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 27,
-        "y": 26,
-        "w": 146,
-        "h": 140
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_04": {
-      "frame": {
-        "x": 586,
-        "y": 383,
-        "w": 145,
-        "h": 146
+        "x": 778,
+        "y": 12,
+        "w": 160,
+        "h": 135
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 26,
-        "y": 18,
-        "w": 145,
-        "h": 146
+        "y": 23,
+        "w": 160,
+        "h": 135
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_13": {
+    "Littera_Q_32": {
       "frame": {
-        "x": 391,
-        "y": 552,
-        "w": 145,
-        "h": 145
+        "x": 962,
+        "y": 12,
+        "w": 155,
+        "h": 134
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 30,
-        "y": 17,
-        "w": 145,
-        "h": 145
+        "x": 26,
+        "y": 23,
+        "w": 155,
+        "h": 134
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_28": {
+    "Littera_Q_39": {
       "frame": {
-        "x": 198,
-        "y": 555,
-        "w": 145,
-        "h": 140
+        "x": 1141,
+        "y": 12,
+        "w": 146,
+        "h": 132
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 27,
-        "y": 27,
-        "w": 145,
-        "h": 140
+        "y": 24,
+        "w": 146,
+        "h": 132
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_36": {
+    "Littera_Q_31": {
       "frame": {
-        "x": 16,
-        "y": 713,
-        "w": 144,
-        "h": 141
+        "x": 1141,
+        "y": 168,
+        "w": 145,
+        "h": 132
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 29,
-        "y": 26,
-        "w": 144,
-        "h": 141
+        "x": 28,
+        "y": 24,
+        "w": 145,
+        "h": 132
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_41": {
+    "Littera_Q_38": {
       "frame": {
-        "x": 192,
-        "y": 727,
+        "x": 962,
+        "y": 170,
+        "w": 151,
+        "h": 134
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 26,
+        "y": 23,
+        "w": 151,
+        "h": 134
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_40": {
+      "frame": {
+        "x": 1137,
+        "y": 324,
         "w": 144,
-        "h": 141
+        "h": 132
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 24,
+        "w": 144,
+        "h": 132
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_41": {
+      "frame": {
+        "x": 591,
+        "y": 171,
+        "w": 144,
+        "h": 130
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 25,
+        "w": 144,
+        "h": 130
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_30": {
+      "frame": {
+        "x": 759,
+        "y": 171,
+        "w": 141,
+        "h": 130
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 29,
         "y": 25,
-        "w": 144,
-        "h": 141
+        "w": 141,
+        "h": 130
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_03": {
+    "Littera_Q_42": {
       "frame": {
-        "x": 16,
-        "y": 886,
-        "w": 143,
-        "h": 146
+        "x": 12,
+        "y": 173,
+        "w": 141,
+        "h": 129
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 29,
-        "y": 19,
-        "w": 143,
-        "h": 146
+        "y": 25,
+        "w": 141,
+        "h": 129
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_42": {
+    "Littera_Q_43": {
       "frame": {
-        "x": 763,
-        "y": 530,
-        "w": 143,
-        "h": 141
+        "x": 177,
+        "y": 173,
+        "w": 141,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 29,
+        "y": 26,
+        "w": 141,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_29": {
+      "frame": {
+        "x": 342,
+        "y": 173,
+        "w": 139,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 30,
+        "y": 26,
+        "w": 139,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_44": {
+      "frame": {
+        "x": 177,
+        "y": 325,
+        "w": 139,
+        "h": 127
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 30,
+        "y": 26,
+        "w": 139,
+        "h": 127
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_09": {
+      "frame": {
+        "x": 12,
+        "y": 326,
+        "w": 138,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 0,
+        "w": 138,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_10": {
+      "frame": {
+        "x": 340,
+        "y": 325,
+        "w": 138,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 0,
+        "w": 138,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_11": {
+      "frame": {
+        "x": 174,
+        "y": 476,
+        "w": 138,
+        "h": 140
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 12,
+        "w": 138,
+        "h": 140
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_12": {
+      "frame": {
+        "x": 12,
+        "y": 502,
+        "w": 138,
+        "h": 139
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 13,
+        "w": 138,
+        "h": 139
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_05": {
+      "frame": {
+        "x": 502,
+        "y": 325,
+        "w": 138,
+        "h": 133
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 12,
+        "w": 138,
+        "h": 133
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_04": {
+      "frame": {
+        "x": 664,
+        "y": 325,
+        "w": 138,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 18,
+        "w": 138,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_00": {
+      "frame": {
+        "x": 826,
+        "y": 328,
+        "w": 138,
+        "h": 125
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 27,
+        "w": 138,
+        "h": 125
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_21": {
+      "frame": {
+        "x": 988,
+        "y": 328,
+        "w": 125,
+        "h": 116
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 36,
+        "y": 32,
+        "w": 125,
+        "h": 116
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_23": {
+      "frame": {
+        "x": 988,
+        "y": 468,
+        "w": 125,
+        "h": 116
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 37,
+        "y": 32,
+        "w": 125,
+        "h": 116
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_01": {
+      "frame": {
+        "x": 1137,
+        "y": 480,
+        "w": 138,
+        "h": 125
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 31,
         "y": 25,
-        "w": 143,
-        "h": 141
+        "w": 138,
+        "h": 125
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_19": {
+    "Littera_Q_03": {
       "frame": {
-        "x": 568,
-        "y": 561,
-        "w": 142,
-        "h": 141
+        "x": 664,
+        "y": 477,
+        "w": 138,
+        "h": 125
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 29,
+        "x": 31,
         "y": 22,
-        "w": 142,
-        "h": 141
+        "w": 138,
+        "h": 125
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_02": {
+    "Littera_Q_45": {
       "frame": {
-        "x": 568,
-        "y": 734,
-        "w": 141,
-        "h": 144
+        "x": 502,
+        "y": 482,
+        "w": 138,
+        "h": 125
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 27,
+        "w": 138,
+        "h": 125
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_02": {
+      "frame": {
+        "x": 826,
+        "y": 477,
+        "w": 138,
+        "h": 124
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 24,
+        "w": 138,
+        "h": 124
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_22": {
+      "frame": {
+        "x": 988,
+        "y": 608,
+        "w": 124,
+        "h": 115
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 37,
+        "y": 33,
+        "w": 124,
+        "h": 115
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_08": {
+      "frame": {
+        "x": 826,
+        "y": 625,
+        "w": 137,
+        "h": 151
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 0,
+        "w": 137,
+        "h": 151
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_13": {
+      "frame": {
+        "x": 664,
+        "y": 629,
+        "w": 137,
+        "h": 132
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 20,
+        "w": 137,
+        "h": 132
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_28": {
+      "frame": {
+        "x": 336,
+        "y": 501,
+        "w": 137,
+        "h": 125
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 28,
+        "w": 137,
+        "h": 125
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_07": {
+      "frame": {
+        "x": 174,
+        "y": 640,
+        "w": 136,
+        "h": 147
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 3,
+        "w": 136,
+        "h": 147
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_06": {
+      "frame": {
+        "x": 12,
+        "y": 665,
+        "w": 136,
+        "h": 134
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 13,
+        "w": 136,
+        "h": 134
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_14": {
+      "frame": {
+        "x": 497,
+        "y": 631,
+        "w": 135,
+        "h": 127
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 32,
-        "y": 21,
-        "w": 141,
-        "h": 144
+        "y": 24,
+        "w": 135,
+        "h": 127
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_43": {
+    "Littera_Q_15": {
       "frame": {
-        "x": 368,
-        "y": 729,
-        "w": 141,
-        "h": 141
+        "x": 334,
+        "y": 650,
+        "w": 133,
+        "h": 126
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 33,
         "y": 25,
-        "w": 141,
-        "h": 141
+        "w": 133,
+        "h": 126
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_14": {
+    "Littera_Q_16": {
       "frame": {
-        "x": 191,
-        "y": 900,
-        "w": 140,
-        "h": 144
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 33,
-        "y": 17,
-        "w": 140,
-        "h": 144
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_35": {
-      "frame": {
-        "x": 16,
-        "y": 1064,
-        "w": 140,
-        "h": 140
+        "x": 491,
+        "y": 782,
+        "w": 133,
+        "h": 124
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 33,
         "y": 26,
-        "w": 140,
-        "h": 140
+        "w": 133,
+        "h": 124
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_01": {
+    "Littera_Q_27": {
       "frame": {
-        "x": 16,
-        "y": 1236,
-        "w": 138,
-        "h": 143
+        "x": 334,
+        "y": 800,
+        "w": 133,
+        "h": 123
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 33,
+        "y": 29,
+        "w": 133,
+        "h": 123
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_17": {
+      "frame": {
+        "x": 172,
+        "y": 811,
+        "w": 131,
+        "h": 123
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 34,
+        "y": 27,
+        "w": 131,
+        "h": 123
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_26": {
+      "frame": {
+        "x": 12,
+        "y": 823,
+        "w": 131,
+        "h": 120
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 34,
+        "y": 30,
+        "w": 131,
+        "h": 120
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_18": {
+      "frame": {
+        "x": 1136,
+        "y": 629,
+        "w": 130,
+        "h": 121
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 34,
+        "y": 28,
+        "w": 130,
+        "h": 121
+      },
+      "sourceSize": {
+        "w": 197,
+        "h": 185
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "Littera_Q_25": {
+      "frame": {
+        "x": 1136,
+        "y": 774,
+        "w": 129,
+        "h": 118
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 35,
-        "y": 22,
-        "w": 138,
-        "h": 143
+        "y": 31,
+        "w": 129,
+        "h": 118
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_44": {
+    "Littera_Q_19": {
       "frame": {
-        "x": 186,
-        "y": 1236,
-        "w": 139,
-        "h": 142
+        "x": 648,
+        "y": 785,
+        "w": 128,
+        "h": 120
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 35,
-        "y": 24,
-        "w": 139,
-        "h": 142
+        "y": 29,
+        "w": 128,
+        "h": 120
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_29": {
+    "Littera_Q_20": {
       "frame": {
-        "x": 363,
-        "y": 902,
-        "w": 139,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 33,
-        "y": 27,
-        "w": 139,
-        "h": 140
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_00": {
-      "frame": {
-        "x": 1167,
-        "y": 360,
-        "w": 137,
-        "h": 141
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 37,
-        "y": 24,
-        "w": 137,
-        "h": 141
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_18": {
-      "frame": {
-        "x": 1167,
-        "y": 533,
-        "w": 137,
-        "h": 141
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 32,
-        "y": 21,
-        "w": 137,
-        "h": 141
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_45": {
-      "frame": {
-        "x": 938,
-        "y": 554,
-        "w": 137,
-        "h": 141
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 37,
-        "y": 24,
-        "w": 137,
-        "h": 141
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_34": {
-      "frame": {
-        "x": 742,
-        "y": 703,
-        "w": 135,
-        "h": 140
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 37,
-        "y": 26,
-        "w": 135,
-        "h": 140
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_15": {
-      "frame": {
-        "x": 742,
-        "y": 875,
-        "w": 134,
-        "h": 142
+        "x": 648,
+        "y": 929,
+        "w": 127,
+        "h": 118
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 36,
-        "y": 19,
-        "w": 134,
-        "h": 142
+        "y": 30,
+        "w": 127,
+        "h": 118
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "Handcuffs_30": {
+    "Littera_Q_24": {
       "frame": {
-        "x": 534,
-        "y": 910,
-        "w": 134,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 38,
-        "y": 27,
-        "w": 134,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_33": {
-      "frame": {
-        "x": 363,
-        "y": 1074,
-        "w": 133,
-        "h": 139
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 39,
-        "y": 26,
-        "w": 133,
-        "h": 139
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_31": {
-      "frame": {
-        "x": 357,
-        "y": 1245,
-        "w": 132,
-        "h": 138
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 40,
-        "y": 27,
-        "w": 132,
-        "h": 138
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_32": {
-      "frame": {
-        "x": 521,
-        "y": 1245,
-        "w": 131,
-        "h": 137
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 41,
-        "y": 27,
-        "w": 131,
-        "h": 137
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_17": {
-      "frame": {
-        "x": 1107,
-        "y": 706,
-        "w": 132,
-        "h": 141
+        "x": 491,
+        "y": 930,
+        "w": 126,
+        "h": 117
       },
       "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 36,
-        "y": 20,
-        "w": 132,
-        "h": 141
+        "y": 32,
+        "w": 126,
+        "h": 117
       },
       "sourceSize": {
-        "w": 182,
-        "h": 167
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "Handcuffs_16": {
-      "frame": {
-        "x": 909,
-        "y": 727,
-        "w": 130,
-        "h": 141
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 39,
-        "y": 19,
-        "w": 130,
-        "h": 141
-      },
-      "sourceSize": {
-        "w": 182,
-        "h": 167
+        "w": 197,
+        "h": 185
       },
       "pivot": {
         "x": 0.5,
@@ -1108,11 +1108,11 @@
   "meta": {
     "app": "http://free-tex-packer.com",
     "version": "0.6.7",
-    "image": "handcuffs.png",
+    "image": "letter-q.png",
     "format": "RGBA8888",
     "size": {
-      "w": 1400,
-      "h": 1400
+      "w": 1300,
+      "h": 1300
     },
     "scale": 1
   }
