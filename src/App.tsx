@@ -3,6 +3,7 @@ import "./App.scss";
 import GridBoard from "./components/GridBoard";
 import { preloadSlotItemAnimations } from "./components/VerticalSlotReel/SlotItem/preloadSlotItemAnimations";
 import { slotItemConfigs } from "./components/VerticalSlotReel/SlotItem/SlotItem.constants";
+import LoadingFrame from "./components/LoadingFrame";
 
 function App() {
   const [loadedItems, setLoadedItems] = useState(0);
@@ -30,14 +31,9 @@ function App() {
 
   if (!isReady) {
     return (
-      <div className="app-shell app-shell--loading">
-        <div className="app-loading" role="status" aria-live="polite">
-          <span className="app-loading__title">Loading</span>
-          <span className="app-loading__progress">
-            {loadedItems}/{slotItemConfigs.length}
-          </span>
-        </div>
-      </div>
+      <LoadingFrame 
+        loading={Math.round((loadedItems / slotItemConfigs.length) * 100)}
+      />
     );
   }
 
