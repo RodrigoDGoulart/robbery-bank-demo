@@ -168,6 +168,7 @@ function GridBoard() {
     Array.from({ length: REELS_COLUMNS }, () => null),
   );
   const [winning, setWinning] = useState(false);
+  const [foxHaveWinned, setFoxHaveWinned] = useState(false);
   const [pendingWinPopUp, setPendingWinPopUp] = useState<WinPopUpType | null>(
     null,
   );
@@ -219,6 +220,7 @@ function GridBoard() {
     setBalance((currentBalance) => currentBalance - bet);
     setWin(0);
     setWinning(false);
+    setFoxHaveWinned(false);
     setPendingWinPopUp(null);
     setActiveWinPopUp(null);
     setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => null));
@@ -249,6 +251,7 @@ function GridBoard() {
     }
 
     setWinning(false);
+    setFoxHaveWinned(false);
     pendingPrizeValueRef.current = null;
     setPendingWinPopUp(null);
     setResultIndexes(
@@ -274,6 +277,7 @@ function GridBoard() {
       const prizeValue = pendingPrizeValueRef.current;
 
       pendingPrizeValueRef.current = null;
+      setFoxHaveWinned(true);
       setWin(prizeValue);
       payoutTimeoutRef.current = window.setTimeout(() => {
         setBalance((currentBalance) => currentBalance + prizeValue);
@@ -307,7 +311,10 @@ function GridBoard() {
         value={bet}
       />
 
-      <Fox />
+      <Fox
+        haveWinned={foxHaveWinned}
+        onHaveWinnedChange={setFoxHaveWinned}
+      />
 
       <div className="reels-container">
         {Array.from({ length: REELS_COLUMNS }, (_, i) => (

@@ -1,14 +1,21 @@
 import { AnimatedSprite, Application, Spritesheet, Texture } from "pixi.js";
 import type { SpritesheetData } from "pixi.js";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import "./Fox.scss";
 
 const FOX_ASSET_PATH = "/SpineFiles/Fox";
 const FOX_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox.json`;
 const FOX_IMAGE_PATH = `${FOX_ASSET_PATH}/fox.png`;
+const FOX_WIN_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox_win.json`;
+const FOX_WIN_IMAGE_PATH = `${FOX_ASSET_PATH}/fox_win.png`;
 const FOX_CANVAS_WIDTH = 340;
 const FOX_CANVAS_HEIGHT = 520;
 const FOX_ANIMATION_FPS = 30;
+
+type FoxProps = {
+  haveWinned?: boolean;
+  onHaveWinnedChange?: (haveWinned: boolean) => void;
+};
 
 function getSortedFoxFrameNames(frames: SpritesheetData["frames"]) {
   return Object.keys(frames).sort((leftFrameName, rightFrameName) => {
@@ -29,8 +36,78 @@ function loadImageElement(src: string) {
   });
 }
 
-function Fox() {
+async function loadFoxFrames(spritesheetPath: string, imagePath: string) {
+  const [spritesheetResponse, image] = await Promise.all([
+    fetch(spritesheetPath),
+    loadImageElement(imagePath),
+  ]);
+  const spritesheetData = (await spritesheetResponse.json()) as SpritesheetData;
+  const texture = Texture.from(image);
+  const spritesheet = new Spritesheet(texture, spritesheetData);
+
+  await spritesheet.parse();
+
+  return getSortedFoxFrameNames(spritesheetData.frames).map(
+    (frameName) => spritesheet.textures[frameName],
+  );
+}
+
+function Fox({ haveWinned = false, onHaveWinnedChange }: FoxProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const foxRef = useRef<AnimatedSprite | null>(null);
+  const idleFramesRef = useRef<Texture[]>([]);
+  const winFramesRef = useRef<Texture[]>([]);
+  const pendingWinRef = useRef(false);
+  const playingWinRef = useRef(false);
+  const playIdleLoopRef = useRef<() => void>(() => undefined);
+  const playWinOnceRef = useRef<() => void>(() => undefined);
+
+  const playIdleLoop = useCallback(() => {
+    const fox = foxRef.current;
+
+    if (!fox || idleFramesRef.current.length === 0) return;
+
+    fox.textures = idleFramesRef.current;
+    fox.loop = true;
+    fox.onComplete = undefined;
+    fox.onLoop = () => {
+      if (!pendingWinRef.current) return;
+
+      playWinOnceRef.current();
+    };
+    fox.gotoAndPlay(0);
+  }, []);
+
+  const playWinOnce = useCallback(() => {
+    const fox = foxRef.current;
+
+    if (!fox || winFramesRef.current.length === 0) return;
+
+    pendingWinRef.current = false;
+    playingWinRef.current = true;
+    fox.textures = winFramesRef.current;
+    fox.loop = false;
+    fox.onLoop = undefined;
+    fox.onComplete = () => {
+      playingWinRef.current = false;
+      playIdleLoopRef.current();
+    };
+    fox.gotoAndPlay(0);
+  }, []);
+
+  useEffect(() => {
+    playIdleLoopRef.current = playIdleLoop;
+    playWinOnceRef.current = playWinOnce;
+  }, [playIdleLoop, playWinOnce]);
+
+  useEffect(() => {
+    if (!haveWinned) return;
+
+    console.log("ganhou!");
+    pendingWinRef.current = true;
+
+    onHaveWinnedChange?.(false);
+  }, [haveWinned, onHaveWinnedChange]);
 
   useEffect(() => {
     let app: Application | null = null;
@@ -72,26 +149,17 @@ function Fox() {
 
       container.appendChild(pixiApp.canvas);
 
-      const [spritesheetResponse, image] = await Promise.all([
-        fetch(FOX_SPRITESHEET_PATH),
-        loadImageElement(FOX_IMAGE_PATH),
+      const [idleFrames, winFrames] = await Promise.all([
+        loadFoxFrames(FOX_SPRITESHEET_PATH, FOX_IMAGE_PATH),
+        loadFoxFrames(FOX_WIN_SPRITESHEET_PATH, FOX_WIN_IMAGE_PATH),
       ]);
 
       if (isCancelled || isDestroyed) return;
 
-      const spritesheetData =
-        (await spritesheetResponse.json()) as SpritesheetData;
-      const texture = Texture.from(image);
-      const spritesheet = new Spritesheet(texture, spritesheetData);
-
-      await spritesheet.parse();
-
-      if (isCancelled || isDestroyed) return;
-
-      const frameNames = getSortedFoxFrameNames(spritesheetData.frames);
-      const frames = frameNames.map((frameName) => spritesheet.textures[frameName]);
+      idleFramesRef.current = idleFrames;
+      winFramesRef.current = winFrames;
       const fox = new AnimatedSprite({
-        textures: frames,
+        textures: idleFrames,
         animationSpeed: FOX_ANIMATION_FPS / 60,
         autoPlay: true,
         loop: true,
@@ -102,7 +170,9 @@ function Fox() {
       fox.scale.set(Math.min(FOX_CANVAS_WIDTH / 425, FOX_CANVAS_HEIGHT / 582));
       fox.position.set(FOX_CANVAS_WIDTH / 2, FOX_CANVAS_HEIGHT / 2);
 
+      foxRef.current = fox;
       pixiApp.stage.addChild(fox);
+      playIdleLoop();
     }
 
     setupFoxAnimation().catch((error: unknown) => {
@@ -111,9 +181,10 @@ function Fox() {
 
     return () => {
       isCancelled = true;
+      foxRef.current = null;
       destroyPixiApp();
     };
-  }, []);
+  }, [playIdleLoop]);
 
   return <div className="fox" ref={containerRef} aria-hidden="true" />;
 }
