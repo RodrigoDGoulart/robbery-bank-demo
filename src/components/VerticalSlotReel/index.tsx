@@ -1,6 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import "./VerticalSlotReel.scss";
+
+export type ReelVisibleCellSnapshot = {
+  key: string;
+  itemId: string;
+  itemIndex: number;
+  cellIndex: number;
+  isCenter: boolean;
+  rect: {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+    width: number;
+    height: number;
+  };
+};
+
+export type ReelVisibleSnapshot = {
+  reelIndex: number;
+  cells: ReelVisibleCellSnapshot[];
+};
 
 export type VerticalSlotReelItem = {
   id: string;
@@ -15,9 +36,12 @@ type VerticalSlotReelProps = {
   spinSignal: number;
   resultIndex: number | null;
   itemIndexes?: number[];
+  reelIndex?: number;
+  hiddenCells?: "all" | "center" | "none";
   winning?: boolean;
   className?: string;
   visibleItems?: number;
+  onVisibleCellsChange?: (snapshot: ReelVisibleSnapshot) => void;
   onStop?: (index: number) => void;
 };
 
@@ -67,9 +91,12 @@ function VerticalSlotReel({
   spinSignal,
   resultIndex,
   itemIndexes,
+  reelIndex = 0,
+  hiddenCells = "none",
   winning = false,
   className = "",
   visibleItems = 5,
+  onVisibleCellsChange,
   onStop,
 }: VerticalSlotReelProps) {
   const reelItemIndexes = useMemo(
@@ -85,6 +112,7 @@ function VerticalSlotReel({
   const positionRef = useRef(0);
   const phaseRef = useRef<"idle" | "spinning" | "stopping">("idle");
   const previousSpinSignalRef = useRef(spinSignal);
+  const cellRefs = useRef(new Map<string, HTMLDivElement>());
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
   const stopRef = useRef({
@@ -125,6 +153,54 @@ function VerticalSlotReel({
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
+
+  useLayoutEffect(() => {
+    if (!onVisibleCellsChange) {
+      return undefined;
+    }
+
+    const measureVisibleCells = () => {
+      onVisibleCellsChange({
+        reelIndex,
+        cells: visibleCells.flatMap(
+          ({ key, item, itemIndex, isCenter }, cellIndex) => {
+            const cell = cellRefs.current.get(key);
+
+            if (!cell) {
+              return [];
+            }
+
+            const rect = cell.getBoundingClientRect();
+
+            return [
+              {
+                key,
+                itemId: item.id,
+                itemIndex,
+                cellIndex,
+                isCenter,
+                rect: {
+                  top: rect.top,
+                  right: rect.right,
+                  bottom: rect.bottom,
+                  left: rect.left,
+                  width: rect.width,
+                  height: rect.height,
+                },
+              },
+            ];
+          },
+        ),
+      });
+    };
+
+    measureVisibleCells();
+    window.addEventListener("resize", measureVisibleCells);
+
+    return () => {
+      window.removeEventListener("resize", measureVisibleCells);
+    };
+  }, [onVisibleCellsChange, reelIndex, visibleCells]);
 
   useEffect(() => {
     if (!items.length || !reelItemIndexes.length) {
@@ -256,10 +332,27 @@ function VerticalSlotReel({
           transform: `translateY(${translateY}px)`,
         }}
       >
-        {visibleCells.map(({ key, item, itemIndex, isCenter }) => (
+        {visibleCells.map(({ key, item, itemIndex, isCenter }) => {
+          const hiddenByOverlay =
+            hiddenCells === "all" || (hiddenCells === "center" && isCenter);
+
+          return (
           <div
-            className="vertical-slot-reel__cell"
+            className={[
+              "vertical-slot-reel__cell",
+              hiddenByOverlay ? "vertical-slot-reel__cell--hidden" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             key={key}
+            ref={(cell) => {
+              if (cell) {
+                cellRefs.current.set(key, cell);
+                return;
+              }
+
+              cellRefs.current.delete(key);
+            }}
             style={{ height: itemHeight }}
           >
             {item.render({
@@ -267,7 +360,8 @@ function VerticalSlotReel({
               winning: winning && selectedIndex === itemIndex && isCenter,
             })}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -1,58 +1,19 @@
-import { AnimatedSprite, Application, Spritesheet, Texture } from "pixi.js";
-import type { SpritesheetData } from "pixi.js";
+import { AnimatedSprite, Application, Texture } from "pixi.js";
 import { useCallback, useEffect, useRef } from "react";
+import { preloadFoxAnimations } from "./foxFrameAssets";
 import "./Fox.scss";
 
-const FOX_ASSET_PATH = "/SpineFiles/Fox";
-const FOX_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox.json`;
-const FOX_IMAGE_PATH = `${FOX_ASSET_PATH}/fox.png`;
-const FOX_WIN_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox_win.json`;
-const FOX_WIN_IMAGE_PATH = `${FOX_ASSET_PATH}/fox_win.png`;
 const FOX_CANVAS_WIDTH = 340;
 const FOX_CANVAS_HEIGHT = 520;
 const FOX_ANIMATION_FPS = 30;
 
 type FoxProps = {
   haveWinned?: boolean;
+  onReady?: () => void;
   onHaveWinnedChange?: (haveWinned: boolean) => void;
 };
 
-function getSortedFoxFrameNames(frames: SpritesheetData["frames"]) {
-  return Object.keys(frames).sort((leftFrameName, rightFrameName) => {
-    const leftIndex = Number(leftFrameName.split("_").at(-1));
-    const rightIndex = Number(rightFrameName.split("_").at(-1));
-
-    return leftIndex - rightIndex;
-  });
-}
-
-function loadImageElement(src: string) {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const image = new Image();
-
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error(`Failed to load image ${src}`));
-    image.src = src;
-  });
-}
-
-async function loadFoxFrames(spritesheetPath: string, imagePath: string) {
-  const [spritesheetResponse, image] = await Promise.all([
-    fetch(spritesheetPath),
-    loadImageElement(imagePath),
-  ]);
-  const spritesheetData = (await spritesheetResponse.json()) as SpritesheetData;
-  const texture = Texture.from(image);
-  const spritesheet = new Spritesheet(texture, spritesheetData);
-
-  await spritesheet.parse();
-
-  return getSortedFoxFrameNames(spritesheetData.frames).map(
-    (frameName) => spritesheet.textures[frameName],
-  );
-}
-
-function Fox({ haveWinned = false, onHaveWinnedChange }: FoxProps) {
+function Fox({ haveWinned = false, onReady, onHaveWinnedChange }: FoxProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const foxRef = useRef<AnimatedSprite | null>(null);
   const idleFramesRef = useRef<Texture[]>([]);
@@ -116,7 +77,7 @@ function Fox({ haveWinned = false, onHaveWinnedChange }: FoxProps) {
     let isDestroyed = false;
 
     function destroyPixiApp() {
-      if (!app || !isInitialized || isDestroyed) return;
+      if (!app?.renderer || !isInitialized || isDestroyed) return;
 
       isDestroyed = true;
       app.destroy({ removeView: true }, { children: true });
@@ -149,10 +110,7 @@ function Fox({ haveWinned = false, onHaveWinnedChange }: FoxProps) {
 
       container.appendChild(pixiApp.canvas);
 
-      const [idleFrames, winFrames] = await Promise.all([
-        loadFoxFrames(FOX_SPRITESHEET_PATH, FOX_IMAGE_PATH),
-        loadFoxFrames(FOX_WIN_SPRITESHEET_PATH, FOX_WIN_IMAGE_PATH),
-      ]);
+      const { idleFrames, winFrames } = await preloadFoxAnimations();
 
       if (isCancelled || isDestroyed) return;
 
@@ -173,6 +131,7 @@ function Fox({ haveWinned = false, onHaveWinnedChange }: FoxProps) {
       foxRef.current = fox;
       pixiApp.stage.addChild(fox);
       playIdleLoop();
+      onReady?.();
     }
 
     setupFoxAnimation().catch((error: unknown) => {
@@ -184,7 +143,7 @@ function Fox({ haveWinned = false, onHaveWinnedChange }: FoxProps) {
       foxRef.current = null;
       destroyPixiApp();
     };
-  }, [playIdleLoop]);
+  }, [onReady, playIdleLoop]);
 
   return <div className="fox" ref={containerRef} aria-hidden="true" />;
 }

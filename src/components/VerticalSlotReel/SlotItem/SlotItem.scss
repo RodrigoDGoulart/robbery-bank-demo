@@ -17,36 +17,3 @@
 .slot-item--selected {
   filter: brightness(1.08) saturate(1.08);
 }
-
-.slot-item--animation {
-  position: relative;
-  display: grid;
-  place-items: center;
-}
-
-.slot-item__preview,
-.slot-item__animation-layer {
-  grid-area: 1 / 1;
-  width: 100%;
-  height: 100%;
-}
-
-.slot-item__preview {
-  display: block;
-  object-fit: contain;
-  transition: opacity 80ms ease;
-}
-
-.slot-item__preview--hidden {
-  opacity: 0;
-}
-
-.slot-item__animation-layer {
-  display: grid;
-  place-items: center;
-  opacity: 0;
-}
-
-.slot-item__animation-layer--ready {
-  opacity: 1;
-}

@@ -1,33 +1,28 @@
 import {
   loadFrameByFrameAssets,
-  loadFrameByFramePreviewSrc,
 } from "../FrameByFrameSlotSymbol/frameByFrameAssets";
 import { preloadSpineSymbolAssets } from "../SpineSlotSymbol/spineAssets";
 import { slotItemConfigs } from "./SlotItem.constants";
 
 let preloadPromise: Promise<void> | null = null;
 
-function getSlotItemAnimationPreloadTasks(itemIndex: number): Promise<unknown>[] {
+async function preloadSlotItemAnimationByIndex(itemIndex: number) {
   const item = slotItemConfigs[itemIndex];
 
   if (!item?.animation) {
-    return [];
+    return;
   }
 
   if (item.animation.type === "frame-by-frame") {
-    return [
-      loadFrameByFrameAssets(item.animation.symbol),
-      loadFrameByFramePreviewSrc(item.animation.symbol),
-    ];
+    await loadFrameByFrameAssets(item.animation.symbol);
+    return;
   }
 
-  return [preloadSpineSymbolAssets(item.animation.symbol)];
+  await preloadSpineSymbolAssets(item.animation.symbol);
 }
 
 export function preloadSlotItemAnimation(itemIndex: number) {
-  return Promise.all(getSlotItemAnimationPreloadTasks(itemIndex)).then(
-    () => undefined,
-  );
+  return preloadSlotItemAnimationByIndex(itemIndex);
 }
 
 export function preloadSlotItemAnimations() {
@@ -35,12 +30,11 @@ export function preloadSlotItemAnimations() {
     return preloadPromise;
   }
 
-  preloadPromise = Promise.all(
-    slotItemConfigs.flatMap((_, itemIndex) =>
-      getSlotItemAnimationPreloadTasks(itemIndex),
-    ),
-  )
-    .then(() => undefined)
+  preloadPromise = (async () => {
+    for (const itemIndex of slotItemConfigs.keys()) {
+      await preloadSlotItemAnimationByIndex(itemIndex);
+    }
+  })()
     .catch((error: unknown) => {
       preloadPromise = null;
       console.error("Failed to preload slot item animations", error);

@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Fox from "../Fox";
+import { preloadFoxAnimations } from "../Fox/foxFrameAssets";
 import JackpotButtons from "../JackpotButtons";
+import SlotAnimationOverlay from "../SlotAnimationOverlay";
+import type { SlotAnimationOverlayMode } from "../SlotAnimationOverlay";
 import VerticalSlotReel from "../VerticalSlotReel";
+import type { ReelVisibleSnapshot } from "../VerticalSlotReel";
 import WinPopUp from "../WinPopUp";
 import { staticImageSlotItems } from "../VerticalSlotReel/StaticImageSlotItems";
 import {
@@ -172,6 +176,14 @@ function GridBoard() {
   );
   const [winning, setWinning] = useState(false);
   const [slotAnimationsReady, setSlotAnimationsReady] = useState(false);
+  const [foxReady, setFoxReady] = useState(false);
+  const [overlayReady, setOverlayReady] = useState(false);
+  const [overlayMode, setOverlayMode] =
+    useState<SlotAnimationOverlayMode>("idle");
+  const [winningItemIndex, setWinningItemIndex] = useState<number | null>(null);
+  const [reelSnapshots, setReelSnapshots] = useState<
+    Record<number, ReelVisibleSnapshot>
+  >({});
   const [foxHaveWinned, setFoxHaveWinned] = useState(false);
   const [pendingWinPopUp, setPendingWinPopUp] = useState<WinPopUpType | null>(
     null,
@@ -183,15 +195,23 @@ function GridBoard() {
   const drawRequestRef = useRef(0);
   const pendingPrizeValueRef = useRef<number | null>(null);
   const payoutTimeoutRef = useRef<number | null>(null);
+  const snapshotsReady = Object.keys(reelSnapshots).length >= REELS_COLUMNS;
+  const gameBoardReady =
+    slotAnimationsReady && foxReady && overlayReady && snapshotsReady;
+  const hiddenReelCells =
+    overlayMode === "idle" ? "all" : overlayMode === "win" ? "center" : "none";
 
   useEffect(() => {
     let cancelled = false;
 
-    void preloadSlotItemAnimations().then(() => {
+    void (async () => {
+      await preloadSlotItemAnimations();
+      await preloadFoxAnimations();
+
       if (!cancelled) {
         setSlotAnimationsReady(true);
       }
-    });
+    })();
 
     return () => {
       cancelled = true;
@@ -220,8 +240,30 @@ function GridBoard() {
     );
   };
 
+  const handleVisibleCellsChange = useCallback(
+    (snapshot: ReelVisibleSnapshot) => {
+      if (overlayMode === "idle") {
+        setOverlayReady(false);
+      }
+
+      setReelSnapshots((currentSnapshots) => ({
+        ...currentSnapshots,
+        [snapshot.reelIndex]: snapshot,
+      }));
+    },
+    [overlayMode],
+  );
+
+  const handleFoxReady = useCallback(() => {
+    setFoxReady(true);
+  }, []);
+
+  const handleOverlayReady = useCallback(() => {
+    setOverlayReady(true);
+  }, []);
+
   const handleRedButton = async () => {
-    if (!slotAnimationsReady || balance < bet) {
+    if (!gameBoardReady || balance < bet) {
       return;
     }
 
@@ -231,6 +273,9 @@ function GridBoard() {
     drawRequestRef.current = requestId;
     stoppedReelsRef.current = 0;
     pendingPrizeValueRef.current = null;
+    setOverlayReady(false);
+    setOverlayMode("spinning");
+    setWinningItemIndex(null);
     setBalance((currentBalance) => currentBalance - bet);
     setWin(0);
     setWinning(false);
@@ -257,6 +302,7 @@ function GridBoard() {
 
       void preloadSlotItemAnimation(result.prize.resultIndex);
 
+      setWinningItemIndex(result.prize.resultIndex);
       pendingPrizeValueRef.current = prizeValue;
       setWinning(true);
       setPendingWinPopUp(winningSlotPopUps[result.prize.resultIndex] ?? null);
@@ -293,6 +339,7 @@ function GridBoard() {
       const prizeValue = pendingPrizeValueRef.current;
 
       pendingPrizeValueRef.current = null;
+      setOverlayMode("win");
       setFoxHaveWinned(true);
       setWin(prizeValue);
       payoutTimeoutRef.current = window.setTimeout(() => {
@@ -303,11 +350,25 @@ function GridBoard() {
   };
 
   if (!slotAnimationsReady) {
-    return <div className="game-board-loading">carregando...</div>;
+    return (
+      <div className="game-board-stage">
+        <div className="game-board-loading">carregando...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="game-board-container">
+    <div className="game-board-stage">
+      {!gameBoardReady && <div className="game-board-loading">carregando...</div>}
+
+      <div
+        className={[
+          "game-board-container",
+          gameBoardReady ? "" : "game-board-container--preparing",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
       <img
         className="grid-board"
         src={`${staticImagePath}/grid-board.png`}
@@ -333,38 +394,48 @@ function GridBoard() {
 
       <Fox
         haveWinned={foxHaveWinned}
+        onReady={handleFoxReady}
         onHaveWinnedChange={setFoxHaveWinned}
       />
 
       <div
         className={[
           "reels-container",
-          slotAnimationsReady ? "reels-container--ready" : "",
+          gameBoardReady ? "reels-container--ready" : "",
         ]
           .filter(Boolean)
           .join(" ")}
       >
-        {slotAnimationsReady &&
-          Array.from({ length: REELS_COLUMNS }, (_, i) => (
-            <VerticalSlotReel
-              key={i}
-              height={545}
-              itemIndexes={reelItemOrders[i]}
-              width={120}
-              items={staticImageSlotItems}
-              resultIndex={resultIndexes[i]}
-              spinSignal={spinSignal}
-              winning={winning}
-              onStop={handleReelStop}
-            />
-          ))}
+        {Array.from({ length: REELS_COLUMNS }, (_, i) => (
+          <VerticalSlotReel
+            key={i}
+            height={545}
+            hiddenCells={hiddenReelCells}
+            itemIndexes={reelItemOrders[i]}
+            onVisibleCellsChange={handleVisibleCellsChange}
+            reelIndex={i}
+            width={120}
+            items={staticImageSlotItems}
+            resultIndex={resultIndexes[i]}
+            spinSignal={spinSignal}
+            winning={winning}
+            onStop={handleReelStop}
+          />
+        ))}
       </div>
+
+      <SlotAnimationOverlay
+        mode={overlayMode}
+        onReady={handleOverlayReady}
+        reelSnapshots={reelSnapshots}
+        winningItemIndex={winningItemIndex}
+      />
 
       <JackpotButtons
         onLeftGreenClick={handleLeftGreenButton}
         onRedClick={handleRedButton}
         onRightGreenClick={handleRightGreenButton}
-        redDisabled={!slotAnimationsReady || balance < bet}
+        redDisabled={!gameBoardReady || balance < bet}
       />
 
       {activeWinPopUp && (
@@ -373,6 +444,7 @@ function GridBoard() {
           onClose={() => setActiveWinPopUp(null)}
         />
       )}
+      </div>
     </div>
   );
 }
