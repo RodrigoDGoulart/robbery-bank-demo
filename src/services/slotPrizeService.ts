@@ -24,12 +24,12 @@ const slotPrizes: SlotPrize[] = [
   { name: "Letter J", chancePercent: 100, resultIndex: 1 },
   { name: "Letter K", chancePercent: 100, resultIndex: 2 },
   { name: "Letter Q", chancePercent: 100, resultIndex: 3 },
-  { name: "Number 10", chancePercent: 100, resultIndex: 4 },
-  { name: "Bank", chancePercent: 100, resultIndex: 5 },
-  { name: "Cell", chancePercent: 100, resultIndex: 6 },
-  { name: "Dynamit", chancePercent: 100, resultIndex: 7 },
-  { name: "Handcuffs", chancePercent: 100, resultIndex: 8 },
-  { name: "Safe", chancePercent: 100, resultIndex: 9 },
+  { name: "Number 10", chancePercent: 0, resultIndex: 4 },
+  { name: "Bank", chancePercent: 0, resultIndex: 5 },
+  { name: "Cell", chancePercent: 0, resultIndex: 6 },
+  { name: "Dynamit", chancePercent: 0, resultIndex: 7 },
+  { name: "Handcuffs", chancePercent: 0, resultIndex: 8 },
+  { name: "Safe", chancePercent: 0, resultIndex: 9 },
 ];
 
 function wait(delayMs: number) {

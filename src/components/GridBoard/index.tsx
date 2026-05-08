@@ -2,9 +2,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Fox from "../Fox";
 import JackpotButtons from "../JackpotButtons";
 import VerticalSlotReel from "../VerticalSlotReel";
+import WinPopUp from "../WinPopUp";
 import { staticImageSlotItems } from "../VerticalSlotReel/StaticImageSlotItems";
 import { preloadSlotItemAnimations } from "../VerticalSlotReel/SlotItem/preloadSlotItemAnimations";
 import { drawSlotPrize } from "../../services/slotPrizeService";
+import { winningSlotPopUps } from "../WinPopUp/WinPopUp.constants";
+import type { WinPopUpType } from "../WinPopUp/WinPopUp.constants";
 import "./GridBoard.scss";
 
 const staticImagePath = "/static_images";
@@ -64,6 +67,13 @@ function GridBoard() {
     Array.from({ length: REELS_COLUMNS }, () => null),
   );
   const [winning, setWinning] = useState(false);
+  const [pendingWinPopUp, setPendingWinPopUp] = useState<WinPopUpType | null>(
+    null,
+  );
+  const [activeWinPopUp, setActiveWinPopUp] = useState<WinPopUpType | null>(
+    null,
+  );
+  const stoppedReelsRef = useRef(0);
   const drawRequestRef = useRef(0);
 
   useEffect(() => {
@@ -71,7 +81,10 @@ function GridBoard() {
   }, []);
 
   const handleLeftGreenButton = () => {
+    stoppedReelsRef.current = 0;
     setWinning(false);
+    setPendingWinPopUp(null);
+    setActiveWinPopUp(null);
     setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => null));
     setSpinSignal((current) => current + 1);
   };
@@ -80,7 +93,10 @@ function GridBoard() {
     const requestId = drawRequestRef.current + 1;
 
     drawRequestRef.current = requestId;
+    stoppedReelsRef.current = 0;
     setWinning(false);
+    setPendingWinPopUp(null);
+    setActiveWinPopUp(null);
     setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => null));
     setSpinSignal((current) => current + 1);
 
@@ -94,6 +110,7 @@ function GridBoard() {
 
     if (result.hasPrize) {
       setWinning(true);
+      setPendingWinPopUp(winningSlotPopUps[result.prize.resultIndex] ?? null);
       setResultIndexes(
         Array.from({ length: REELS_COLUMNS }, () => result.prize.resultIndex),
       );
@@ -101,14 +118,27 @@ function GridBoard() {
     }
 
     setWinning(false);
+    setPendingWinPopUp(null);
     setResultIndexes(
       getShuffledResultIndexes(staticImageSlotItems.length, REELS_COLUMNS),
     );
   };
 
   const handleRightGreenButton = () => {
+    stoppedReelsRef.current = 0;
     setWinning(true);
+    setPendingWinPopUp(null);
+    setActiveWinPopUp(null);
     setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => BANK_RESULT_INDEX));
+  };
+
+  const handleReelStop = () => {
+    stoppedReelsRef.current += 1;
+
+    if (stoppedReelsRef.current >= REELS_COLUMNS && pendingWinPopUp) {
+      setActiveWinPopUp(pendingWinPopUp);
+      setPendingWinPopUp(null);
+    }
   };
 
   return (
@@ -132,6 +162,7 @@ function GridBoard() {
             resultIndex={resultIndexes[i]}
             spinSignal={spinSignal}
             winning={winning}
+            onStop={handleReelStop}
           />
         ))}
       </div>
@@ -141,6 +172,13 @@ function GridBoard() {
         onRedClick={handleRedButton}
         onRightGreenClick={handleRightGreenButton}
       />
+
+      {activeWinPopUp && (
+        <WinPopUp
+          type={activeWinPopUp}
+          onClose={() => setActiveWinPopUp(null)}
+        />
+      )}
     </div>
   );
 }

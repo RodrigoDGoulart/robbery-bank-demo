@@ -1,0 +1,29 @@
+.win-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+.win-popup__stage {
+  position: relative;
+  width: min(82vw, 700px);
+  aspect-ratio: 900 / 820;
+}
+
+.win-popup__animation {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.win-popup__animation canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
