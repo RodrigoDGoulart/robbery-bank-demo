@@ -1,6 +1,9 @@
 import { AnimatedSprite, Application } from "pixi.js";
 import { useEffect, useRef } from "react";
-import { loadFrameByFrameAssets } from "./frameByFrameAssets";
+import {
+  getSortedFrameNames,
+  loadFrameByFrameAssets,
+} from "./frameByFrameAssets";
 import "./FrameByFrameSlotSymbol.scss";
 
 export type FrameByFrameSlotSymbolConfig = {
@@ -15,8 +18,6 @@ export type FrameByFrameSlotSymbolConfig = {
 
 type FrameByFrameSlotSymbolProps = {
   symbol: FrameByFrameSlotSymbolConfig;
-  playing?: boolean;
-  onReady?: () => void;
   canvasWidth?: number;
   canvasHeight?: number;
 };
@@ -26,18 +27,10 @@ const DEFAULT_FPS = 30;
 
 function FrameByFrameSlotSymbol({
   symbol,
-  playing = false,
-  onReady,
   canvasWidth = 108,
   canvasHeight = 108,
 }: FrameByFrameSlotSymbolProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const animatedSymbolRef = useRef<AnimatedSprite | null>(null);
-  const playingRef = useRef(playing);
-
-  useEffect(() => {
-    playingRef.current = playing;
-  }, [playing]);
 
   useEffect(() => {
     let app: Application | null = null;
@@ -79,14 +72,17 @@ function FrameByFrameSlotSymbol({
 
       container.appendChild(pixiApp.canvas);
 
-      const { frames } = await loadFrameByFrameAssets(symbol);
+      const { spritesheet, spritesheetData } =
+        await loadFrameByFrameAssets(symbol);
 
       if (isCancelled || isDestroyed) return;
 
+      const frameNames = getSortedFrameNames(spritesheetData.frames);
+      const frames = frameNames.map((frameName) => spritesheet.textures[frameName]);
       const animatedSymbol = new AnimatedSprite({
         textures: frames,
         animationSpeed: (symbol.fps ?? DEFAULT_FPS) / 60,
-        autoPlay: false,
+        autoPlay: true,
         loop: true,
         updateAnchor: true,
       });
@@ -98,15 +94,8 @@ function FrameByFrameSlotSymbol({
       animatedSymbol.anchor.set(0.5);
       animatedSymbol.scale.set(scale);
       animatedSymbol.position.set(canvasWidth / 2, canvasHeight / 2);
-      animatedSymbol.gotoAndStop(0);
 
-      animatedSymbolRef.current = animatedSymbol;
       pixiApp.stage.addChild(animatedSymbol);
-      onReady?.();
-
-      if (playingRef.current) {
-        animatedSymbol.gotoAndPlay(0);
-      }
     }
 
     setupAnimation().catch((error: unknown) => {
@@ -115,25 +104,9 @@ function FrameByFrameSlotSymbol({
 
     return () => {
       isCancelled = true;
-      animatedSymbolRef.current = null;
       destroyPixiApp();
     };
-  }, [canvasHeight, canvasWidth, onReady, symbol]);
-
-  useEffect(() => {
-    const animatedSymbol = animatedSymbolRef.current;
-
-    if (!animatedSymbol) {
-      return;
-    }
-
-    if (playing) {
-      animatedSymbol.gotoAndPlay(0);
-      return;
-    }
-
-    animatedSymbol.gotoAndStop(0);
-  }, [playing]);
+  }, [canvasHeight, canvasWidth, symbol]);
 
   return (
     <div

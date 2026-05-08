@@ -1,28 +1,17 @@
-import {
-  loadFrameByFrameAssets,
-} from "../FrameByFrameSlotSymbol/frameByFrameAssets";
+import { loadFrameByFrameAssets } from "../FrameByFrameSlotSymbol/frameByFrameAssets";
 import { preloadSpineSymbolAssets } from "../SpineSlotSymbol/spineAssets";
 import { slotItemConfigs } from "./SlotItem.constants";
 
 let preloadPromise: Promise<void> | null = null;
 
-async function preloadSlotItemAnimationByIndex(itemIndex: number) {
-  const item = slotItemConfigs[itemIndex];
+function preloadStaticImage(src: string) {
+  return new Promise<void>((resolve) => {
+    const image = new Image();
 
-  if (!item?.animation) {
-    return;
-  }
-
-  if (item.animation.type === "frame-by-frame") {
-    await loadFrameByFrameAssets(item.animation.symbol);
-    return;
-  }
-
-  await preloadSpineSymbolAssets(item.animation.symbol);
-}
-
-export function preloadSlotItemAnimation(itemIndex: number) {
-  return preloadSlotItemAnimationByIndex(itemIndex);
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = src;
+  });
 }
 
 export function preloadSlotItemAnimations() {
@@ -30,15 +19,27 @@ export function preloadSlotItemAnimations() {
     return preloadPromise;
   }
 
-  preloadPromise = (async () => {
-    for (const itemIndex of slotItemConfigs.keys()) {
-      await preloadSlotItemAnimationByIndex(itemIndex);
-    }
-  })()
+  preloadPromise = Promise.all(
+    slotItemConfigs.flatMap((item) => {
+      const preloadTasks: Promise<unknown>[] = [
+        preloadStaticImage(item.staticImage.src),
+      ];
+
+      if (item.animation?.type === "frame-by-frame") {
+        preloadTasks.push(loadFrameByFrameAssets(item.animation.symbol));
+      }
+
+      if (item.animation?.type === "spine") {
+        preloadTasks.push(preloadSpineSymbolAssets(item.animation.symbol));
+      }
+
+      return preloadTasks;
+    }),
+  )
+    .then(() => undefined)
     .catch((error: unknown) => {
       preloadPromise = null;
       console.error("Failed to preload slot item animations", error);
-      throw error;
     });
 
   return preloadPromise;

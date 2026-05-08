@@ -3,8 +3,6 @@ import type { SpritesheetData } from "pixi.js";
 import type { FrameByFrameSlotSymbolConfig } from ".";
 
 type FrameByFrameAssets = {
-  frames: Texture[];
-  frameNames: string[];
   spritesheet: Spritesheet;
   spritesheetData: SpritesheetData;
 };
@@ -59,12 +57,7 @@ export function loadFrameByFrameAssets(symbol: FrameByFrameSlotSymbolConfig) {
 
     await spritesheet.parse();
 
-    const frameNames = getSortedFrameNames(spritesheetData.frames);
-    const frames = frameNames.map((frameName) => spritesheet.textures[frameName]);
-
     return {
-      frames,
-      frameNames,
       spritesheet,
       spritesheetData,
     };

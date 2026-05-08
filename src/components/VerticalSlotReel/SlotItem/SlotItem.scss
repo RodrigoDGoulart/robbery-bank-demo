@@ -17,3 +17,8 @@
 .slot-item--selected {
   filter: brightness(1.08) saturate(1.08);
 }
+
+.slot-item--animation {
+  display: grid;
+  place-items: center;
+}
