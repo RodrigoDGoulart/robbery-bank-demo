@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# Robbery Bank Slot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Demo de um jogo demonstrativo de caca-niquel desenvolvido em React. O projeto simula uma experiencia basica de slot machine, com interface animada, sorteio de resultados, exibicao de premios e modos de cheat para forcar determinados cenarios durante testes e demonstracoes.
 
-Currently, two official plugins are available:
+A proposta e apresentar uma base visual e funcional para um jogo de caca-niquel, combinando animacoes em tempo real com regras simples de sorteio e componentes reutilizaveis para rolos, grade, popups de vitoria e controles de jackpot.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tecnologias
 
-## React Compiler
+- **React**: construcao da interface e organizacao dos componentes.
+- **TypeScript**: tipagem do codigo da aplicacao.
+- **Vite**: ambiente de desenvolvimento e build.
+- **PixiJS**: renderizacao grafica de alta performance para elementos animados.
+- **@pixi/react**: integracao do PixiJS com React.
+- **Spine Pixi**: suporte a animacoes Spine dentro do PixiJS.
+- **Sass**: estilizacao dos componentes.
+- **ESLint**: padronizacao e verificacao estatica do codigo.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Como Rodar
 
-## Expanding the ESLint configuration
+Instale as dependencias:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Inicie o servidor de desenvolvimento:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Depois disso, acesse a URL exibida no terminal pelo Vite, normalmente:
+
+```bash
+http://localhost:5173
+```
+
+## Scripts Disponiveis
+
+- `npm run dev`: inicia o projeto em modo de desenvolvimento.
+- `npm run build`: gera a versao de producao.
+- `npm run preview`: abre uma previa local da build.
+- `npm run lint`: executa a verificacao de lint.
