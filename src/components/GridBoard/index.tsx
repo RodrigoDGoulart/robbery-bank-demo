@@ -335,9 +335,7 @@ function GridBoard() {
         {Array.from({ length: REELS_COLUMNS }, (_, i) => (
           <VerticalSlotReel
             key={i}
-            height={545}
             itemIndexes={reelItemOrders[i]}
-            width={120}
             className={
               showInitialSlotAnimation ? "vertical-slot-reel--initial-hidden" : ""
             }

@@ -10,8 +10,6 @@ export type VerticalSlotReelItem = {
 
 type VerticalSlotReelProps = {
   items: VerticalSlotReelItem[];
-  width: number;
-  height: number;
   spinSignal: number;
   resultIndex: number | null;
   itemIndexes?: number[];
@@ -63,8 +61,6 @@ function clearSelection(setSelectedIndex: (index: number | null) => void) {
 
 function VerticalSlotReel({
   items,
-  width,
-  height,
   spinSignal,
   resultIndex,
   itemIndexes,
@@ -74,17 +70,20 @@ function VerticalSlotReel({
   spinEnabled = true,
   onStop,
 }: VerticalSlotReelProps) {
+  const reelRef = useRef<HTMLDivElement | null>(null);
+  const [reelHeight, setReelHeight] = useState(0);
   const reelItemIndexes = useMemo(
     () => normalizeItemIndexes(itemIndexes, items.length),
     [itemIndexes, items.length],
   );
   const safeVisibleItems = Math.max(3, visibleItems | 1);
-  const itemHeight = height / safeVisibleItems;
+  const itemHeight = reelHeight / safeVisibleItems;
   const centerOffset = Math.floor(safeVisibleItems / 2);
 
   const [position, setPosition] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const positionRef = useRef(0);
+  const itemHeightRef = useRef(0);
   const phaseRef = useRef<"idle" | "spinning" | "stopping">("idle");
   const frameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
@@ -95,6 +94,26 @@ function VerticalSlotReel({
     duration: MIN_STOP_DURATION,
     resultIndex: 0,
   });
+
+  useEffect(() => {
+    const reelElement = reelRef.current;
+
+    if (!reelElement) {
+      return undefined;
+    }
+
+    const updateReelHeight = () => {
+      setReelHeight(reelElement.getBoundingClientRect().height);
+    };
+
+    updateReelHeight();
+
+    const resizeObserver = new ResizeObserver(updateReelHeight);
+
+    resizeObserver.observe(reelElement);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   const visibleCells = useMemo(() => {
     if (!items.length || !reelItemIndexes.length) {
@@ -126,6 +145,10 @@ function VerticalSlotReel({
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
+
+  useEffect(() => {
+    itemHeightRef.current = itemHeight;
+  }, [itemHeight]);
 
   useEffect(() => {
     if (!items.length || !reelItemIndexes.length) {
@@ -174,7 +197,8 @@ function VerticalSlotReel({
       from: currentPosition,
       to: targetPosition,
       startTime: performance.now(),
-      duration: MIN_STOP_DURATION + Math.min(distance * itemHeight * 0.18, 700),
+      duration:
+        MIN_STOP_DURATION + Math.min(distance * itemHeightRef.current * 0.18, 700),
       resultIndex: normalizedResult,
     };
     phaseRef.current = "stopping";
@@ -182,7 +206,6 @@ function VerticalSlotReel({
     clearSelection(setSelectedIndex);
   }, [
     centerOffset,
-    itemHeight,
     items.length,
     reelItemIndexes,
     resultIndex,
@@ -248,8 +271,8 @@ function VerticalSlotReel({
 
   return (
     <div
+      ref={reelRef}
       className={`vertical-slot-reel ${className}`.trim()}
-      style={{ width, height }}
     >
       <div className="vertical-slot-reel__selection" />
       <div

@@ -1,6 +1,8 @@
 .vertical-slot-reel {
   position: relative;
   overflow: hidden;
+  width: min(123px, 9.2vw);
+  height: min(40vw, 545px) !important;
 }
 
 .vertical-slot-reel--initial-hidden {
@@ -30,10 +32,10 @@
 .vertical-slot-reel__selection {
   position: absolute;
   top: 50%;
-  right: 6px;
-  left: 6px;
+  // right: 6px;
+  // left: 6px;
   z-index: 3;
-  height: 20%;
+  height: min(110px, 8vw);
   border-top: 2px solid rgba(255, 245, 190, 0.2);
   border-bottom: 2px solid rgba(255, 245, 190, 0.2);
   transform: translateY(-50%);
@@ -45,6 +47,7 @@
   top: 0;
   right: 0;
   left: 0;
+  height: 100% !important;
   will-change: transform;
 }
 

@@ -1,7 +1,7 @@
 .slot-item {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  width: min(120px, 8vw) !important;
+  height: min(90px, 7vw) !important;
   user-select: none;
   pointer-events: none;
   transform-origin: center;
@@ -21,4 +21,5 @@
 .slot-item--animation {
   display: grid;
   place-items: center;
+  height: min(110px, 10vw) !important;
 }
