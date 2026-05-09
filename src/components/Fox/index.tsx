@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef } from "react";
 import "./Fox.scss";
 
 const FOX_ASSET_PATH = "/SpineFiles/Fox";
-const FOX_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox.json`;
-const FOX_IMAGE_PATH = `${FOX_ASSET_PATH}/fox.png`;
+const FOX_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/Fox.json`;
+const FOX_IMAGE_PATH = `${FOX_ASSET_PATH}/Fox.png`;
 const FOX_WIN_SPRITESHEET_PATH = `${FOX_ASSET_PATH}/fox_win.json`;
 const FOX_WIN_IMAGE_PATH = `${FOX_ASSET_PATH}/fox_win.png`;
 const FOX_CANVAS_WIDTH = 340;

@@ -182,8 +182,8 @@ export const slotItemConfigs: SlotItemConfig[] = [
       symbol: {
         id: "cell",
         name: "Cell",
-        jsonPath: "/SpineFiles/Cell/cell.json",
-        imagePath: "/SpineFiles/Cell/cell.png",
+        jsonPath: "/SpineFiles/Cell/Cell.json",
+        imagePath: "/SpineFiles/Cell/Cell.png",
         sourceWidth: 188,
         sourceHeight: 124,
         fps: 30,
@@ -224,8 +224,8 @@ export const slotItemConfigs: SlotItemConfig[] = [
       symbol: {
         id: "handcuffs",
         name: "Handcuffs",
-        jsonPath: "/SpineFiles/Handcuffs/handcuffs.json",
-        imagePath: "/SpineFiles/Handcuffs/handcuffs.png",
+        jsonPath: "/SpineFiles/Handcuffs/Handcuffs.json",
+        imagePath: "/SpineFiles/Handcuffs/Handcuffs.png",
         sourceWidth: 182,
         sourceHeight: 167,
         fps: 30,
