@@ -2,6 +2,7 @@ export type SlotPrize = {
   name: string;
   chancePercent: number;
   resultIndex: number;
+  value: number;
 };
 
 export type DrawSlotPrizeOptions = {
@@ -33,16 +34,16 @@ export type DrawSlotPrizeResult =
     };
 
 const defaultSlotPrizes: SlotPrize[] = [
-  { name: "Letter A", chancePercent: 0.5, resultIndex: 0 },
-  { name: "Letter K", chancePercent: 1, resultIndex: 2 },
-  { name: "Letter Q", chancePercent: 1.5, resultIndex: 3 },
-  { name: "Letter J", chancePercent: 2, resultIndex: 1 },
-  { name: "Number 10", chancePercent: 5, resultIndex: 4 },
-  { name: "Bank", chancePercent: 5, resultIndex: 5 },
-  { name: "Safe", chancePercent: 5, resultIndex: 9 },
-  { name: "Cell", chancePercent: 10, resultIndex: 6 },
-  { name: "Handcuffs", chancePercent: 10, resultIndex: 8 },
-  { name: "Dynamit", chancePercent: 10, resultIndex: 7 },
+  { name: "Letter A", chancePercent: 0.5, resultIndex: 0, value: 10300000 },
+  { name: "Letter K", chancePercent: 1, resultIndex: 2, value: 1300000 },
+  { name: "Letter Q", chancePercent: 1.5, resultIndex: 3, value: 300000 },
+  { name: "Letter J", chancePercent: 2, resultIndex: 1, value: 100000 },
+  { name: "Number 10", chancePercent: 5, resultIndex: 4, value: 10000 },
+  { name: "Bank", chancePercent: 5, resultIndex: 5, value: 10000 },
+  { name: "Safe", chancePercent: 5, resultIndex: 9, value: 10000 },
+  { name: "Cell", chancePercent: 10, resultIndex: 6, value: 10000 },
+  { name: "Handcuffs", chancePercent: 10, resultIndex: 8, value: 10000 },
+  { name: "Dynamit", chancePercent: 10, resultIndex: 7, value: 10000 },
 ];
 
 const resultIndexByMode: Record<Exclude<SlotPrizeDrawMode, "bad-luck">, number> =

@@ -43,11 +43,3 @@ export function getNextBetValue(currentBet: number, betValues: readonly number[]
 
   return betValues[nextIndex] ?? currentBet;
 }
-
-export function getSlotPrizeValue(
-  resultIndex: number,
-  prizeValuesByResultIndex: Record<number, number>,
-  defaultPrizeValue: number,
-) {
-  return prizeValuesByResultIndex[resultIndex] ?? defaultPrizeValue;
-}

@@ -11,17 +11,14 @@ import { winningSlotPopUps } from "../WinPopUp/WinPopUp.constants";
 import type { WinPopUpType } from "../WinPopUp/WinPopUp.constants";
 import {
   BET_VALUES,
-  DEFAULT_PRIZE_VALUE,
   GRID_BOARD_VALUE_MAX_LENGTH,
   INITIAL_BALANCE,
   INITIAL_WIN,
   REELS_COLUMNS,
-  SLOT_PRIZE_VALUES_BY_RESULT_INDEX,
 } from "./GridBoard.constants";
 import {
   formatGridBoardValue,
   getNextBetValue,
-  getSlotPrizeValue,
 } from "../../services/gridBoardValueService";
 import "./GridBoard.scss";
 
@@ -247,11 +244,7 @@ function GridBoard() {
     }
 
     if (result.hasPrize) {
-      const prizeValue = getSlotPrizeValue(
-        result.prize.resultIndex,
-        SLOT_PRIZE_VALUES_BY_RESULT_INDEX,
-        DEFAULT_PRIZE_VALUE,
-      );
+      const prizeValue = result.prize.value;
 
       pendingPrizeValueRef.current = prizeValue;
       setWinning(true);
