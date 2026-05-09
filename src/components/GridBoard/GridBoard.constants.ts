@@ -1,5 +1,4 @@
 export const REELS_COLUMNS = 6;
-export const NO_PRIZE_CHANCE_PERCENT = 0;
 export const BANK_RESULT_INDEX = 5;
 
 export const INITIAL_BALANCE = 1000;

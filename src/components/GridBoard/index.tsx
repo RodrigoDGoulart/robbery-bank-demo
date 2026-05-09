@@ -15,7 +15,6 @@ import {
   GRID_BOARD_VALUE_MAX_LENGTH,
   INITIAL_BALANCE,
   INITIAL_WIN,
-  NO_PRIZE_CHANCE_PERCENT,
   REELS_COLUMNS,
   SLOT_PRIZE_VALUES_BY_RESULT_INDEX,
 } from "./GridBoard.constants";
@@ -241,9 +240,7 @@ function GridBoard() {
     setResultIndexes(Array.from({ length: REELS_COLUMNS }, () => null));
     setSpinSignal((current) => current + 1);
 
-    const result = await drawSlotPrize({
-      noPrizeChancePercent: NO_PRIZE_CHANCE_PERCENT,
-    });
+    const result = await drawSlotPrize();
 
     if (requestId !== drawRequestRef.current) {
       return;
