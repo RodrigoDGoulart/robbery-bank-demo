@@ -32,7 +32,7 @@ function App() {
   if (!isReady) {
     return (
       <LoadingFrame 
-        loading={Math.round((loadedItems / slotItemConfigs.length) * 100)}
+        loading={loadedItems / slotItemConfigs.length}
       />
     );
   }
