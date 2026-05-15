@@ -189,7 +189,9 @@ function GridBoard() {
     null,
   );
   const [showInitialSlotAnimation, setShowInitialSlotAnimation] = useState(true);
+  const [isSpinning, setIsSpinning] = useState(false);
   const stoppedReelsRef = useRef(0);
+  const isSpinningRef = useRef(false);
   const drawRequestRef = useRef(0);
   const pendingPrizeValueRef = useRef<number | null>(null);
   const payoutTimeoutRef = useRef<number | null>(null);
@@ -209,6 +211,11 @@ function GridBoard() {
     }
   };
 
+  const unlockSpin = () => {
+    isSpinningRef.current = false;
+    setIsSpinning(false);
+  };
+
   const handleLeftGreenButton = () => {
     setBet(
       (currentBet) =>
@@ -217,16 +224,18 @@ function GridBoard() {
   };
 
   const handleRedButton = async () => {
-    if (balance < bet) {
+    if (isSpinningRef.current || balance < bet) {
       return;
     }
 
     const requestId = drawRequestRef.current + 1;
 
     clearPayoutTimeout();
+    isSpinningRef.current = true;
     drawRequestRef.current = requestId;
     stoppedReelsRef.current = 0;
     pendingPrizeValueRef.current = null;
+    setIsSpinning(true);
     setShowInitialSlotAnimation(false);
     setBalance((currentBalance) => currentBalance - bet);
     setWin(0);
@@ -273,13 +282,19 @@ function GridBoard() {
   const handleReelStop = () => {
     stoppedReelsRef.current += 1;
 
-    if (stoppedReelsRef.current >= REELS_COLUMNS && pendingWinPopUp) {
-      setActiveWinPopUp(pendingWinPopUp);
-      setPendingWinPopUp(null);
-    }
-
-    if (stoppedReelsRef.current >= REELS_COLUMNS && pendingPrizeValueRef.current) {
+    if (stoppedReelsRef.current >= REELS_COLUMNS) {
+      const hasWinPopUp = pendingWinPopUp !== null;
       const prizeValue = pendingPrizeValueRef.current;
+
+      if (pendingWinPopUp) {
+        setActiveWinPopUp(pendingWinPopUp);
+        setPendingWinPopUp(null);
+      }
+
+      if (!prizeValue) {
+        unlockSpin();
+        return;
+      }
 
       pendingPrizeValueRef.current = null;
       setFoxHaveWinned(true);
@@ -287,7 +302,15 @@ function GridBoard() {
       payoutTimeoutRef.current = window.setTimeout(() => {
         setBalance((currentBalance) => currentBalance + prizeValue);
         payoutTimeoutRef.current = null;
+
+        if (!hasWinPopUp) {
+          unlockSpin();
+        }
       }, WIN_BALANCE_TRANSFER_DELAY_MS);
+
+      if (hasWinPopUp) {
+        unlockSpin();
+      }
     }
   };
 
@@ -357,7 +380,7 @@ function GridBoard() {
         onLeftGreenClick={handleLeftGreenButton}
         onRedClick={handleRedButton}
         onRightGreenClick={handleRightGreenButton}
-        redDisabled={balance < bet}
+        redDisabled={!isSpinning && balance < bet}
       />
 
       {activeWinPopUp && (
